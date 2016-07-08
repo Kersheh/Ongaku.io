@@ -9,7 +9,10 @@ var ongaku = angular.module('ongaku', [
 
 ongaku.config(['$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
 
-  $routeProvider.otherwise({ redirectTo: '/'});
+  $routeProvider.when('/', {
+    title: 'Home',
+    templateUrl: 'app/components/views/home.html',
+  }).otherwise({ redirectTo: '/'});
 
 	// settings for http communications
 	$httpProvider.defaults.useXDomain = true;
