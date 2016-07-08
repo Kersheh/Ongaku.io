@@ -1,22 +1,7 @@
-// HomeController.js
-// For distribution, all controllers
-// are concatanated into single app.js file
-// by using Gulp
-
 'use strict';
 
-angular.module('ongaku.login', ['ngRoute'])
-
-// Routing configuration for this module
-.config(['$routeProvider',function($routeProvider){
-	$routeProvider.when('/login', {
-		controller: 'LoginController',
-		templateUrl: 'app/components/views/login.html'
-	});
-}])
-
-// Controller definition for this module
-.controller('LoginController', function($scope,$http,$timeout) {
+angular.module('ongaku.login', [])
+.controller('LoginController', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
 
 		// Global variables for this controller
 		var responseStatus = '';
@@ -66,5 +51,5 @@ angular.module('ongaku.login', ['ngRoute'])
 		// // Adding small delay for IP address to be populated before loading the view
 		var filterTextTimeout = $timeout(function() {
 			loadUserIp();
-        }, 500); // delay 500 ms
-});
+    }, 500); // delay 500 ms
+}]);
