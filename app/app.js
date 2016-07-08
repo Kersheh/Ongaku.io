@@ -3,19 +3,25 @@
 var ongaku = angular.module('ongaku', [
   'ngRoute',
   'ongaku.home',
-  'ongaku.login'
+  'ongaku.login',
+  'ongaku.room'
 ]);
 
 ongaku.config(['$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
   $routeProvider.when('/', {
     title: 'Home',
     templateUrl: 'app/components/views/home.html',
-    controller : 'HomeController',
+    controller : 'HomeCtrl',
   })
   .when('/login', {
     title: 'Login',
     templateUrl: 'app/components/views/login.html',
-    controller: 'LoginController',
+    controller: 'LoginCtrl',
+  })
+  .when('/room', {
+    title: 'Room',
+    templateUrl: 'app/components/views/room.html',
+    controller: 'RoomCtrl',
   }).otherwise({ redirectTo: '/'});
 
 	// settings for http communications

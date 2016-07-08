@@ -13,7 +13,8 @@ body {
 a {
   color: #555;
 }
-a:hover {
+a:hover,
+a:focus {
   color: #333;
   text-decoration: none;
 }
@@ -25,4 +26,50 @@ a:hover {
   width: 790px;
   padding-left: 170px;
   margin: 0 auto -20px auto;
+}
+h1 {
+  font-family: "GillSans-Light", "Gill Sans-Light", "Gill Sans Light", "Gill Sans", "Gill Sans MT", "Lato", "Futura", "Segoe UI", "Trebuchet MS", sans-serif;
+  font-weight: 300 !important;
+  text-transform: uppercase;
+}
+h2,
+h3 {
+  font-family: "Gill Sans", "Gill Sans MT", "Lato", "Futura", "Segoe UI", "Corbel", "Trebuchet MS", sans-serif;
+  text-transform: uppercase;
+}
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  text-transform: uppercase;
+  color: #404040;
+}
+.sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-height: 100%;
+  width: 150px;
+  padding: 0 10px;
+  overflow: hidden;
+}
+.sidebar br.spacer {
+  clear: both;
+  height: 20px;
+}
+.sidebar-left {
+  padding: 0 15px 0 5px;
+  text-align: right;
+  border-right: 1px solid #DDD;
+}
+.sidebar-left ul {
+  text-align: right;
+}
+.sidebar-left li {
+  list-style: none;
+}
+.sidebar h2 {
+  font-size: 18px;
+  margin-left: -5px;
+  text-align: right;
 }

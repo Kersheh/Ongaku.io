@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ongaku.login', [])
-.controller('LoginController', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
+.controller('LoginCtrl', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
 
 		// Global variables for this controller
 		var responseStatus = '';
