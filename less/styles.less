@@ -20,14 +20,10 @@ a:hover, a:focus {
   text-decoration: none;
 }
 
-.container {
+.content {
   min-height: 100%;
-  position: relative;
-  top: 0;
-  margin: 0;
-  width: 790px;
   padding-left: 170px;
-  margin: 0 auto -20px auto;
+  width: 80%;
 }
 
 h1 {
@@ -46,6 +42,8 @@ h1, h2, h3 {
   text-transform: uppercase;
   color: #404040;
 }
+
+/* Nav */
 
 .sidebar {
   position: absolute;
@@ -80,4 +78,142 @@ h1, h2, h3 {
   font-size: 18px;
   margin-left: -5px;
   text-align: right;
+}
+
+/* Room */
+
+.avatar {
+  float: left;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 6px;
+  top: 1px;
+  z-index: 4;
+  border-right: 1px solid #eeeee5;
+}
+
+.mini-avatar {
+  float: none;
+  display: inline-block;
+  height: 18px;
+  width: 18px;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  margin-right: -1px;
+  margin-bottom: -1px;
+}
+
+ul {
+  list-style: none;
+  word-wrap: break-word;
+}
+
+/* Pages */
+
+.pages {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 50%;
+}
+
+.page {
+  height: 100%;
+  width: 100%;
+  border: 1px solid #DDD;
+  padding: 10px;
+}
+
+/* Login Page */
+
+.login.page {
+  // border: 1px solid #DDD;
+}
+
+.login.page .form {
+  height: 100px;
+  text-align: center;
+  top: 100%;
+  width: 100%;
+
+}
+
+.login.page .form .usernameInput {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #fff;
+  outline: none;
+  padding-bottom: 15px;
+  text-align: center;
+  width: 400px;
+}
+
+.login.page .title {
+  font-size: 200%;
+}
+
+.login.page .usernameInput {
+  font-size: 200%;
+  letter-spacing: 3px;
+}
+
+.login.page .title, .login.page .usernameInput {
+  font-weight: 100;
+}
+
+/* Chat page */
+
+.chat.page {
+  display: none;
+}
+
+/* Font */
+
+.inputMessage {
+  font-size: 100%;
+}
+
+.log {
+  color: gray;
+  font-size: 70%;
+  margin: 5px;
+  text-align: center;
+}
+
+/* Messages */
+
+.chatArea {
+  height: 100%;
+}
+
+.messages {
+  font-size: 120%;
+  height: 100%;
+  margin: 0;
+  overflow-y: scroll;
+  padding: 10px 10px 10px 10px;
+}
+
+.message.typing .messageBody {
+  color: gray;
+}
+
+.username {
+  float: left;
+  font-weight: 700;
+  overflow: hidden;
+  padding-right: 15px;
+  text-align: right;
+}
+
+/* Input */
+
+.inputMessage {
+  border: 1px solid #DDD;
+  height: 40px;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
 }
