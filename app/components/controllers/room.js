@@ -2,9 +2,5 @@
 
 angular.module('ongaku.room', [])
 .controller('RoomCtrl', ['$scope', function($scope) {
-  function init() {
-
-  }
-
-  init();
+  var socket = io.connect('http://localhost:3000');
 }]);

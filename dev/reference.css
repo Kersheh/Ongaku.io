@@ -1,0 +1,986 @@
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background-color: #f6f6f4;
+    line-height: 1.5;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 10pt;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+a {
+    color: #555;
+}
+
+#container {
+    min-height: 100%;
+    position: relative;
+    top: 0;
+    margin: 0;
+    width: 790px;
+    padding-left: 170px;
+    margin: 0 auto -20px auto;
+}
+
+h1, #homelink, #sendChat {
+    font-family: "GillSans-Light", "Gill Sans-Light", "Gill Sans Light", "Gill Sans", "Gill Sans MT", "Lato", "Futura", "Segoe UI", "Trebuchet MS", sans-serif;
+    font-weight: 300 !important;
+    text-transform: uppercase;
+}
+
+h2, h3, .label, #top, .mini-record .icon, .progress .progressLabel,
+.toolbar a, .button, button, input[type=submit], .sidebar h2, .sidebar h3 {
+    font-family: "Gill Sans", "Gill Sans MT", "Lato", "Futura", "Segoe UI", "Corbel", "Trebuchet MS", sans-serif;
+    text-transform: uppercase;
+}
+
+h1, h2, h3 {
+    font-weight: normal;
+    text-transform: uppercase;
+    color: #404040;
+}
+
+.sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 100%;
+    width: 150px;
+    padding: 0 10px;
+    overflow: hidden;
+}
+
+.sidebar br.spacer {
+    clear: both;
+    height: 20px;
+}
+
+.sidebar a {
+    text-decoration: underline;
+}
+
+#sidebar-right {
+    left: 790px;
+    padding: 0 5px 0 15px;
+/*    -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, .2);
+    -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, .2);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, .2);*/
+}
+
+#sidebar-left {
+    padding: 0 15px 0 5px;
+    text-align: right;
+    margin-left: -170px;
+    border-right: 1px solid #ddd;
+}
+
+#sidebar-left ul {
+    text-align: right;
+}
+
+.sidebar h3, .sidebar h2 {
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+.sidebar h2 {
+    font-size: 18px;
+    margin-left: -5px;
+    text-align: right;
+}
+
+.sidebar p {
+    margin: 20px 0;
+}
+
+.sidebar ul {
+    margin: 10px 0;
+}
+
+#homelink {
+    margin-top: 10px;
+}
+
+#homelink a {
+    text-decoration: none;
+}
+
+.sidebar h3:first-child, .sidebar h2:first-child, .sidebar p:first-child {
+    margin-top: 20px;
+}
+
+.content {
+    padding: 0 45px 30px 45px;
+}
+
+.content h2:first-child {
+    margin-top: 20px;
+}
+
+.content h1+p {
+    margin-top: 20px;
+}
+
+
+#main {
+    background-color: white;
+    position: absolute;
+    width: 619px;
+    margin: 0;
+    border-right: 1px solid #ddd;
+    padding: 0;
+    top: 0;
+    min-height: 100%;
+    -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, .1);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, .1);
+}
+
+
+#timeline {
+    position: relative;
+    padding: 30px 10px;
+}
+
+.trackHistory {
+    width: 100%;
+    clear: both;
+}
+
+.trackHistory-current {
+    clear: none;
+    min-height: 240px;
+}
+
+.trackHistory-current .recordWithDescription {
+    margin-top: -48px;
+}
+
+.recordWithDescription {
+    width: 200px;
+    padding: 10px;
+    margin: 20px 0 0 14px;
+    position: relative;
+    float: left;
+    clear: both;
+}
+
+.recordWithDescription .description {
+    margin: 15px 5px;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.recordWithDescription .recordWrapper, .recordWithDescription .recordWrapper * {
+    pointer-events: none;
+}
+
+.recordWithDescription .progress {
+    width: 140px;
+    right: 10px;
+    left: auto;
+    bottom: 20px;
+    /*top: 207px;*/
+}
+
+.recordWithDescription .progress .progressBar {
+    background-color: #766;
+    -webkit-transition: width 100ms linear;
+    -moz-transition: width 100ms linear;
+    transition: width 50ms linear;
+}
+
+.trackHistory .annotations {
+    border-left: 1px solid /* #ccc; */ white;
+}
+
+.trackHistory-current .annotations {
+    margin-top: 0;
+}
+
+.noTrack .annotations {
+    border-left: 1px solid white;
+    margin-left: 269px;
+}
+
+.annotations {
+    float: right;
+    width: 265px;
+    padding: 10px 39px 10px 10px;
+}
+
+.annotations a {
+    text-decoration: none;
+    color: #337788;
+}
+
+.annotations .message, .annotations div.username {
+    display: block;
+    margin: 0px 0px 5px 46px;
+    line-height: 1.2em;
+    word-wrap: break-word;
+}
+
+.annotations div.username {
+    padding-top: 3px;
+    margin-top: 20px;
+    font-size: 9pt;
+    color: #444;
+}
+
+.annotations .annotation:first-child div.username {
+    margin-top: 0px;
+}
+
+.annotations div.username:after {
+    content: ':';
+}
+
+.annotations .username {
+    display: block;
+}
+
+.annotation {
+    clear: left;
+}
+
+.tick {
+    float: left;
+    clear: left;
+    margin-left: -15px;
+    width: 5px;
+    height: 50px;
+    position: relative;
+}
+
+.tick div {
+    width: 5px;
+    height: 0px;
+    border-top: 1px solid #ccc;
+    position: relative;
+    left: 5px;
+}
+
+.jump {
+    clear: both;
+    margin: 10px 0;
+    text-align: left;
+    color: #998;
+}
+
+.jump-begin, .jump-end {
+    padding: 10px ;
+}
+
+.jump-end {
+    border-bottom: 1px dashed #e5e5e0;
+}
+
+#present {
+    position: relative;
+}
+
+#chatInput {
+    float: right;
+    width: 290px;
+    z-index: 2;
+    margin: 0 20px 0 0;
+    padding: 0;
+    position: relative;
+    top: 0;
+}
+
+.placeholderText {
+    color: #bbb;
+}
+
+.avatar {
+    float: left;
+    width: 40px;
+    height: 40px;
+}
+
+.mini-avatar {
+    float: none;
+    display: inline-block;
+    height: 18px;
+    width: 18px;
+    vertical-align: text-bottom;
+    margin-left: 2px;
+    margin-right: -1px;
+    margin-bottom: -1px;
+}
+
+#chatInput .avatar {
+    position: absolute;
+    left: 6px;
+    top: 1px;
+    z-index: 4;
+    border-right: 1px solid #eeeee5;
+}
+
+#chatInput button {
+    z-index: 4;
+    position: absolute;
+    height: 42px;
+    right: -1px;
+    bottom: 0px;
+    padding: 3px 5px;
+    font-weight: bold;
+    -moz-border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0;
+    width: 20px;
+}
+
+#chatInput textarea {
+    display: block;
+    margin: 0 0 0 5px;
+    background-color: white;
+    border-style: solid;
+    border-color: #ddddd5 #eeeee5 #eeeee5 #ddddd5;
+    border-width: 1px 1px 1px 1px;
+    height: 34px;
+    padding: 3px 5px 3px 45px;
+    width: 215px;
+    resize: none;
+    font-size: inherit;
+    font-family: inherit;
+    position: relative;
+    z-index: 3;
+    outline: none;
+    overflow: auto;
+}
+
+#player {
+    position: absolute;
+    left: 20px;
+    top: 0;
+}
+
+h3.history {
+    clear: both;
+    text-align: center;
+    margin-top: 0;
+}
+
+#pastPresentLabel {
+    display: none;
+    position: absolute;
+    right: 300px;
+    text-align: right;
+    top: 220px;
+    font-size: 9pt;
+    line-height: 30px;
+}
+
+.sidebar #users {
+    margin: 0;
+}
+
+#users .avatar {
+    vertical-align: top;
+    margin-right: 8px;
+}
+
+#users li {
+    text-align: right;
+    clear: both;
+    padding-top: 10px;
+    width: 100%;
+    opacity: .6;
+    position: relative;
+}
+
+#users li.present-user {
+    opacity: 1;
+}
+
+#users li:first-child {
+    padding-top: 0;
+    margin-top: 0;
+}
+
+#users .admin {
+  margin-right: 2px;
+}
+
+.queue {
+    vertical-align: top;
+    margin-left: -10px;
+    position: relative;
+}
+
+.queue .mini-record {
+    float: right;
+    margin-left: 3px;
+    margin-top: 3px;
+}
+
+.current-user .mini-record {
+    cursor: move;
+}
+
+.tooltip .disabled {
+    background-color: white;
+    border: 1px solid #fed;
+    padding: 10px;
+    color: #b70;
+}
+
+#account {
+    margin-top: 10px;
+}
+
+#status {
+    margin: -2px 10px 0 10px;
+    text-align: center;
+}
+
+#status span {
+    padding: 3px 6px;
+    line-height: 1em;
+}
+
+body.admin #status:hover .message, #status input {
+    border: 1px solid #ffe;
+    background-color: #ffe;
+    margin: -1px;
+}
+
+#status input {
+    padding: 3px 6px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ccd #dde #dde #ccd;
+    margin: -2px 0 -2px -2px;
+    width: 300px;
+    text-align: center;
+    outline: none;
+}
+
+#status .instructions {
+    position: absolute;
+    color: #99a;
+    display: none;
+}
+
+#status:hover .instructions {
+}
+
+#status .buttonSet {
+    padding: 0;
+    position: absolute;
+    margin-left: 4px;
+}
+
+#status .buttonSet button {
+    line-height: 1em;
+    font-size: 9pt;
+}
+
+#music {
+    padding: 20px;
+    padding-bottom: 220px;
+}
+
+p {
+    margin: 10px 0;
+}
+
+h1 {
+    font-size: 28pt;
+    line-height: 40px;
+    margin: 20px 20px 3px 20px;
+    text-align: center;
+}
+
+h2 {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 14pt;
+}
+
+h3 {
+    margin-top: 20px;
+    font-size: 11pt;
+    font-weight: normal;
+}
+
+#music h3 {
+    margin-right: 155px;
+}
+
+.roomLink h3 {
+    display: inline;
+}
+
+.roomLink a {
+    color: #666;
+    text-decoration: none;
+}
+
+.roomLink a:hover {
+    text-decoration: underline;
+}
+
+.roomLink {
+    margin-top: 3px;
+}
+
+.sidebar ul, .sidebar li {
+    list-style: none;
+    margin: 3px 0;
+    padding: 0;
+}
+
+input {
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+.recordWrapper {
+    position: relative;
+    height: 190px;
+    width: 190px;
+    padding: 2px;
+    margin: -2px;
+    overflow: hidden;
+}
+
+.record {
+    position: relative;
+    width: 190px;
+    height: 190px;
+    background-color: black;
+    border-radius: 100px;
+    -moz-border-radius: 100px;
+    padding: 0;
+    -webkit-background-size: 100%;
+    -moz-background-size: 100%;
+    background-size: 100%;
+    opacity: 1;
+    -webkit-box-shadow: 0px 0px 3px #222;
+    -moz-box-shadow: 0px 0px 3px #222;
+    box-shadow: 0px 0px 3px #222;
+}
+
+.mini-record {
+    width: 28px;
+    height: 28px;
+    -moz-border-radius: 15px;
+    border-radus: 15px;
+    background-color: #111;
+    -webkit-box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, .3);
+    -moz-box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, .3);
+}
+
+.record .label {
+    background-color: white;
+    border-style: solid;
+    border-color: #ddd;
+    border-width: 0px 0px 32px 0;
+    
+    width: 64px;
+    height: 32px; /* really 64 with border */
+    position: absolute;
+    top: 63px;
+    left: 63px;
+    -moz-border-radius: 31px;
+    border-radius: 31px;
+    opacity: .8;
+}
+
+.mini-record .label {
+    width: 10px;
+    height: 10px;
+    border-bottom-width: 0px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    top: 9px;
+    left: 9px;
+    background-color: #ddd;
+    opacity: .9;
+}
+
+.record .track {
+    -moz-border-radius: 195px;
+    border-radius: 195px;
+    border-style: solid;
+    border-color: #bbb;
+    opacity: .25;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 1px;
+}
+
+.mini-record .track {
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    border-width: 4px;
+    width: 18px;
+    height: 18px;
+    border-color: #888;
+}
+
+.record .hole {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: white;
+    top: 93px;
+    left: 93px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    opacity: 1;
+}
+
+.trackHistory-current .record .hole {
+    background-color: #666;
+}
+
+.mini-record .hole {
+    width: 2px;
+    height: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    left: 13px;
+    top: 13px;
+    background-color: black; /* #565650;*/
+}
+
+.mini-record .icon {
+    position: absolute;
+    bottom: -3px;
+    right: -3px;
+    line-height: 20px;
+    font-size: 12px;
+    color: #444;
+    font-weight: bold;
+    text-shadow:
+      -1px -1px 0 #fff,
+      1px -1px 0 #fff,
+      -1px 1px 0 #fff,
+      1px 1px 0 #fff;
+}
+
+.mini-record-disabled {
+    opacity: .5 !important;
+}
+
+.mini-record .progress {
+    height: 4px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+}
+
+.mini-record .progressLabel {
+    display: none;
+}
+
+.description p {
+    margin: 5px 0;
+}
+
+.description a {
+    /*color: #605959;*/
+}
+
+.description a[href] {
+    color: #543;
+}
+
+.description .addedUser, .description .links {
+    margin-top: 10px;
+    font-size: 8pt;
+}
+
+.description .links a {
+    text-decoration: none;
+    color: #379;
+}
+
+.recordWithDescription .remove {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 160px;
+}
+
+.recordWithDescription:hover .remove {
+    display: block;
+}
+
+button::-moz-focus-inner {
+    padding:0;
+    border: none;
+}
+
+.button, button, input[type=submit] {
+    text-transform: uppercase;
+    font-size: 13px;
+    background-color: #e5e5e5;
+    background-image: -moz-linear-gradient(270deg, #eee, #ccc);
+    background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ccc));
+    text-decoration: none !important;
+    color: #666 !important;
+    margin: 0;
+    border: 1px solid #b0b0b0;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    line-height: normal;
+    padding: 3px 8px;
+    -webkit-background-clip: padding-box;
+}
+
+.button:active, button.inset, button:active, input[type=submit]:active {
+    background-image: -moz-linear-gradient(270deg, #bbb, #ddd);
+    background: -webkit-gradient(linear, left top, left bottom, from(#bbb), to(#ddd));
+    box-shadow: 0px 0px 2px #ccc;
+    color: #555;
+    border: 1px solid #aaa;
+}
+
+.buttonSet button {
+    padding: 3px 8px;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    border-right-width: 0px;
+}
+
+.buttonSet button:first-child {
+    -moz-border-radius: 5px 0 0 5px;
+    border-radius: 5px 0 0 5px;
+}
+
+.buttonSet button:last-child {
+    -moz-border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0;
+    border-right-width: 1px;
+}
+
+.sidebar .buttonContainer {
+    margin: 5px 0;
+}
+
+#mute {
+    width: 5em;
+}
+
+
+.progress {
+    height: 4px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    background-color: #fffff0;
+    border: 1px solid #777770;
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    margin-left: -1px;
+    width: 80%;
+    z-index: 2;
+}
+
+.progress .progressBar {
+    height: 100%;
+    background-color: #88bbaa;
+    border-radius: 4px 0 0 4px;
+    -moz-border-radius: 4px 0 0 4px;
+    z-index: 2;
+}
+
+.progress .progressLabel {
+    position: absolute;
+    font-size: 11px;
+    color: #766;
+    text-transform: uppercase;
+    right: 100%;
+    margin-right: 5px;
+    background: none;
+    top: -5px;
+}
+
+.recordPlayer {
+  text-align: left;
+  background-image: url('/web/20111006121658/http://listeningroom.net/tt-bg.png');
+  width: 242px;
+  height: 186px;
+  padding: 6px;
+  -webkit-box-shadow: 2px 2px 3px rgba(120, 110, 100, .5);
+  -moz-box-shadow: 2px 2px 3px rgba(120, 110, 100, .5);
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin: 0px 0 60px 0;
+}
+
+.recordPlayer svg {
+    margin: -3px;
+}
+
+.recordPlayer .arm {
+    top: 5px;
+    right: 10px;
+    position: absolute;
+    z-index: 2;
+    width: 50px;
+    height: 200px;
+}
+
+.recordPlayer .base {
+    fill: #876;
+}
+
+.recordPlayer button {
+    position: absolute;
+    top: 160px;
+    right: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+    z-index: 5;
+    visibility: hidden;
+    display: none;
+    border-color: #908070;
+    letter-spacing: -2px;
+}
+
+.recordPlayer:hover button {
+    visibility: visible;
+}
+
+svg.arm circle {
+    fill: #ba9;
+    stroke: #876;
+    stroke-width: 0px;
+}
+
+
+#sm2-container {
+    /* Initial state: position:absolute/off-screen, or left/top:0 */
+    position: absolute;
+    left: -600px;
+    top: 0px;
+    height: 100px;
+    padding: 20px;
+    width: 500px;
+    z-index: 2;
+}
+#sm2-container.swf_timedout {
+    left: 0;
+    background-color: #bb3333;
+    color: white;
+/* Didn't load before time-out, show to user.
+   Maybe highlight on-screen, red border, etc..? */
+}
+
+#sm2-container.swf_timedout :before {
+    font-size: 110%;
+    z-index: 100;
+    content: "Looks like you're running a Flash blocker. Please enable Flash for Listening Room to work.";
+}
+
+#sm2-container.swf_unblocked {
+    left: -600px;
+/* Applied if movie loads successfully
+   (flash started, so move off-screen etc.) */
+}
+
+#sm2-container.swf_error {
+  /* "Fatal" error case: SWF loaded,
+  but SM2 was unable to start for some reason.
+  (Flash security or other error case.) */
+}
+#sm2-container.high_performance {
+  /* Additional modifier for "high performance" mode
+  should apply position:fixed and left/bottom 0 to stay on-screen
+  at all times (better flash performance) */
+}
+#sm2-container.flash_debug {
+  /* Additional modifier for flash debug output mode
+  should use width/height 100% so you can read debug messages */
+}
+
+th, td {
+    text-align: left;
+    vertical-align: top;
+    border: none;
+}
+
+th {
+    font-weight: normal;
+}
+
+#sponsor {
+    margin-top: 20px;
+    min-height: 170px;
+}
+
+#aboutRoom {
+   /*position: absolute*/
+   margin-top: 10px;
+}
+
+.adframe {
+    border: none;
+    background: transparent;
+    width: 155px;
+    overflow: hidden;
+}
+
+#sidebar-right li a, .sidebar a[href="/logout"] {
+    text-decoration: none;
+}
+
+#sidebar-right li a:hover {
+    text-decoration: underline;
+}
+
+#rdioSearch {
+    width: 100%;
+}
+    
+
+#rdioTracks {
+    position: absolute;
+    margin-top: -3px;
+    border: 1px solid #ddd;
+    padding: 0 10px;
+    width: 240px;
+    background-color: white;
+    z-index: 5;
+    -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, .1);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, .1);  
+    display: none;
+}
+
+#rdioTracks .mini-record {
+    float: left;
+    margin: 5px 5px 0 0;
+}
+
+.rdioResult {
+    margin: 10px 0;
+    clear: both;
+    cursor: pointer;
+}
+
+.rdioResult .title, .rdioResult .artist {
+    margin-left: 35px;
+}
+
+.rdioResult .title {
+    font-weight: bold;
+}
+
+.unicode {
+    /* Workaround for Chromium issue 58876, unicode characters render
+       as boxes in Windows */
+    text-rendering: optimizeSpeed;
+    -webkit-font-smoothing: subpixel-antialiased;
+}
