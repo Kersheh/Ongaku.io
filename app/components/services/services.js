@@ -32,4 +32,16 @@ angular.module('ongaku.services', [])
       return h + ':' + m.substr(-2) + ':' + s.substr(-2);
     }
   };
+})
+.factory('url', function($rootScope) {
+  return {
+    isURL: function(str) {
+      var pattern = new RegExp('(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})'); // fragment locater
+      if(!pattern.test(str)) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+  };
 });

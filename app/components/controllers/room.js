@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ongaku.room', [])
-.controller('RoomCtrl', ['$scope', 'socket', 'timestamp', function($scope, socket, timestamp) {
+.controller('RoomCtrl', ['$scope', 'socket', 'timestamp', 'url', function($scope, socket, timestamp, url) {
   $scope = $scope.$new(true);
   var FADE_TIME = 150; // ms
   var TYPING_TIMER_LENGTH = 400; // ms
@@ -93,9 +93,17 @@ angular.module('ongaku.room', [])
     var $usernameDiv = $('<span class="username"/>')
       .text(data.username)
       .css('color', getUsernameColor(data.username));
-    var $messageBodyDiv = $('<span class="messageBody">')
-      .text(data.message);
 
+    var messages = data.message.split(' ');
+    // convert urls to links
+    for(var i in messages) {
+      if(url.isURL(messages[i])) {
+        messages[i] = '<a class="messageLink" target="_blank" href="' + messages[i] + '">' + messages[i] + '</a>';
+      }
+    }
+    data.message = messages.join(' ');
+    var $messageBodyDiv = $('<span class="messageBody">')
+      .append(data.message);
     var typingClass = data.typing ? 'typing' : '';
     var $messageDiv = $('<li class="message"/>')
       .data('username', data.username)
@@ -238,7 +246,7 @@ angular.module('ongaku.room', [])
   socket.on('login', function(data) {
     connected = true;
     // Display the welcome message
-    var message = "Welcome to Ongaku – ";
+    var message = "Welcome to Ongaku";
     log(message, {
       prepend: true
     });
