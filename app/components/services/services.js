@@ -1,6 +1,4 @@
-// 'use strict';
-
-angular.module('ongaku.socket', [])
+angular.module('ongaku.services', [])
 .factory('socket', function($rootScope) {
   var socket = io.connect('http://localhost:3000');
   return {
@@ -21,6 +19,17 @@ angular.module('ongaku.socket', [])
           }
         });
       });
+    }
+  };
+})
+.factory('timestamp', function($rootScope) {
+  return {
+    time: function() {
+      var date = new Date();
+      var h = date.getHours();
+      var m = '0' + date.getMinutes();
+      var s = '0' + date.getSeconds();
+      return h + ':' + m.substr(-2) + ':' + s.substr(-2);
     }
   };
 });

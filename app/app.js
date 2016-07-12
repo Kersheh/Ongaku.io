@@ -5,7 +5,7 @@ var ongaku = angular.module('ongaku', [
   'ongaku.home',
   'ongaku.login',
   'ongaku.room',
-  'ongaku.socket'
+  'ongaku.services'
 ]);
 
 ongaku.config(['$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
