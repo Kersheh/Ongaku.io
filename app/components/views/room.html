@@ -18,4 +18,14 @@
     </li>
   </ul>
 
+  <audio class="audioPlayer" controls preload="none">
+    <source type="audio/mpeg">
+  </audio>
+
+  <span id="upload">
+    <label for="fileBox">Choose A File: </label><input type="file" id="fileBox"><br>
+    <label for="nameBox">Name: </label><input type="text" id="nameBox"><br>
+    <button ng-click="submit()" type="button" id="uploadButton" class="button">Upload</button>
+  </span>
+
 </div>

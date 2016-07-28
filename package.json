@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "scripts": {
+    "start": "http-server -p 5000"
+  },
   "author": "Matt Breckon <mattbreckon@gmail.com>",
   "license": "MIT",
   "devDependencies": {

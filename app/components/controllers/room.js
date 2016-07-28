@@ -1,8 +1,46 @@
-'use strict';
-
 angular.module('ongaku.room', [])
-.controller('RoomCtrl', ['$scope', 'socket', 'timestamp', 'url', function($scope, socket, timestamp, url) {
-  $scope = $scope.$new(true);
+.controller('RoomCtrl', ['$scope', 'socket', 'timestamp', 'url', 'upload', function($scope, socket, timestamp, url, upload) {
+  /* Audio */
+
+  // var jsmediatags = window.jsmediatags;
+
+  $scope.submit = function() {
+
+  };
+
+  upload.init('uploadButton', 'fileBox', 'nameBox', 'uploadArea', socket);
+
+  // $scope.submit = function() {
+  //   var fileInput = document.getElementById('audio-file');
+  //   var file = fileInput.files[0];
+  //   var formData = new FormData();
+  //   formData.append('file', file);
+
+  //   console.log(formData);
+  //   socket.emit('test send', formData);
+  // };
+
+
+  // jsmediatags.read("assets/audio/test.mp3", {
+  //   onSuccess: function(tag) {
+  //     console.log(tag);
+  //   },
+  //   onError: function(error) {
+  //     console.log(error);
+  //   }
+  // });
+
+  // incoming audio
+  // socket.on('audio stream', function(data) {
+  //   var blob = new Blob([data], {type: "audio/mpeg"});
+  //   var url = URL.createObjectURL(blob);
+  //   $('audio').attr('src', url);
+  //   $('audio').trigger('load');
+  //   $('audio').trigger('play');
+  // });
+
+  /* Chat */
+
   var FADE_TIME = 150; // ms
   var TYPING_TIMER_LENGTH = 400; // ms
   var COLORS = [
@@ -95,7 +133,7 @@ angular.module('ongaku.room', [])
       .css('color', getUsernameColor(data.username));
 
     var messages = data.message.split(' ');
-    // convert urls to links
+    // Convert urls to links
     for(var i in messages) {
       if(url.isURL(messages[i])) {
         messages[i] = '<a class="messageLink" target="_blank" href="' + messages[i] + '">' + messages[i] + '</a>';
@@ -133,7 +171,6 @@ angular.module('ongaku.room', [])
   // options.prepend - If the element should prepend
   //   all other messages (default = false)
   function addMessageElement(el, options) {
-
     var $el = $(el);
 
     // Setup default options
@@ -208,9 +245,9 @@ angular.module('ongaku.room', [])
 
   $window.keydown(function(event) {
     // Auto-focus the current input when a key is typed
-    if(!(event.ctrlKey || event.metaKey || event.altKey)) {
-      $currentInput.focus();
-    }
+    // if(!(event.ctrlKey || event.metaKey || event.altKey)) {
+    //   $currentInput.focus();
+    // }
     // When the client hits ENTER on their keyboard
     if(event.which === 13) {
       if(username) {
