@@ -1,14 +1,8 @@
 angular.module('ongaku.room', [])
-.controller('RoomCtrl', ['$scope', 'socket', 'timestamp', 'url', 'upload', function($scope, socket, timestamp, url, upload) {
+.controller('RoomCtrl', ['$scope', 'socket', 'timestamp', 'url', function($scope, socket, timestamp, url) {
   /* Audio */
 
   // var jsmediatags = window.jsmediatags;
-
-  $scope.submit = function() {
-
-  };
-
-  upload.init('uploadButton', 'fileBox', 'nameBox', 'uploadArea', socket);
 
   // $scope.submit = function() {
   //   var fileInput = document.getElementById('audio-file');
@@ -28,15 +22,6 @@ angular.module('ongaku.room', [])
   //   onError: function(error) {
   //     console.log(error);
   //   }
-  // });
-
-  // incoming audio
-  // socket.on('audio stream', function(data) {
-  //   var blob = new Blob([data], {type: "audio/mpeg"});
-  //   var url = URL.createObjectURL(blob);
-  //   $('audio').attr('src', url);
-  //   $('audio').trigger('load');
-  //   $('audio').trigger('play');
   // });
 
   /* Chat */
