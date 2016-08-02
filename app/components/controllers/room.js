@@ -1,28 +1,7 @@
 angular.module('ongaku.room', [])
-.controller('RoomCtrl', ['$scope', 'socket', 'timestamp', 'url', function($scope, socket, timestamp, url) {
-  /* Audio */
+.controller('RoomCtrl', ['$scope', 'audio', 'socket', 'timestamp', 'url', function($scope, audio, socket, timestamp, url) {
 
-  // var jsmediatags = window.jsmediatags;
-
-  // $scope.submit = function() {
-  //   var fileInput = document.getElementById('audio-file');
-  //   var file = fileInput.files[0];
-  //   var formData = new FormData();
-  //   formData.append('file', file);
-
-  //   console.log(formData);
-  //   socket.emit('test send', formData);
-  // };
-
-
-  // jsmediatags.read("assets/audio/test.mp3", {
-  //   onSuccess: function(tag) {
-  //     console.log(tag);
-  //   },
-  //   onError: function(error) {
-  //     console.log(error);
-  //   }
-  // });
+  audio.currentSong();
 
   /* Chat */
 
@@ -111,8 +90,7 @@ angular.module('ongaku.room', [])
       $typingMessages.remove();
     }
 
-    var $timeDiv = $('<span class="time"/>')
-      .text('[' + data.time + ']');
+    var $timeDiv = $('<span class="time"/>').text('[' + data.time + ']');
     var $usernameDiv = $('<span class="username"/>')
       .text(data.username)
       .css('color', getUsernameColor(data.username));
@@ -125,8 +103,7 @@ angular.module('ongaku.room', [])
       }
     }
     data.message = messages.join(' ');
-    var $messageBodyDiv = $('<span class="messageBody">')
-      .append(data.message);
+    var $messageBodyDiv = $('<span class="messageBody">').append(data.message);
     var typingClass = data.typing ? 'typing' : '';
     var $messageDiv = $('<li class="message"/>')
       .data('username', data.username)

@@ -2,8 +2,6 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
-var exec = require('child_process').exec;
-// var util = require('util');
 
 // stream audio client
 var audio;
@@ -29,10 +27,14 @@ function saveAudio(audio) {
 }
 
 io.on('connection', function(socket) {
+  socket.on('get current song', function() {
+    socket.emit('current song', 'Hello world');
+  });
   /* Audio Upload from Client */
+
   var files = {};
 
-  socket.on('start', function(data) {
+  socket.on('upload start', function(data) {
     console.log('Starting upload');
     var name = data['name'];
     files[name] = {
@@ -55,7 +57,7 @@ io.on('connection', function(socket) {
       }
       else {
         files[name]['handler'] = fd; // store file handler
-        socket.emit('moreData', { 'place': place, percent: 0 });
+        socket.emit('request data', { 'place': place, percent: 0 });
       }
     });
   });
@@ -68,29 +70,30 @@ io.on('connection', function(socket) {
 
     // if file is fully uploaded
     if(files[name]['downloaded'] == files[name]['fileSize']) {
-      fs.write(files[name]['handler'], files[name]['data'], null, 'binary', function(err, write){
+      fs.write(files[name]['handler'], files[name]['data'], null, 'binary', function(err, write) {
         var inp = fs.createReadStream(__dirname + '/temp/' + name);
         var outp = fs.createWriteStream(__dirname + '/audio/' + name);
         inp.pipe(outp, function() {
           fs.unlink(__dirname + '/temp/' + name, function () {
             // moving file completed
+            socket.emit('upload complete', {'Image' : 'Video/' + Name + '.jpg'});
           });
         });
       });
     }
     // if the data buffer reaches 10MB
     else if(files[name]['data'].length > 10485760) {
-      fs.write(files[name]['handler'], files[name]['data'], null, 'binary', function(err, write){
+      fs.write(files[name]['handler'], files[name]['data'], null, 'binary', function(err, write) {
         files[name]['data'] = ''; // reset buffer
         var place = files[name]['downloaded'] / 524288;
         var percent = (files[name]['downloaded'] / files[name]['fileSize']) * 100;
-        socket.emit('moreData', { 'place': place, 'percent': percent });
+        socket.emit('request data', { 'place': place, 'percent': percent });
       });
     }
     else {
       var place = files[name]['downloaded'] / 524288;
       var percent = (files[name]['downloaded'] / files[name]['fileSize']) * 100;
-      socket.emit('moreData', { 'place': place, 'percent': percent });
+      socket.emit('request data', { 'place': place, 'percent': percent });
     }
   });
 
@@ -159,6 +162,7 @@ io.on('connection', function(socket) {
       });
     }
   });
+
 });
 
 /* Server */

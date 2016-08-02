@@ -32,4 +32,7 @@ ongaku.config(['$routeProvider', '$locationProvider', '$httpProvider', function(
 
   // disabling # in Angular urls
   // $locationProvider.html5Mode(true);
+}])
+.run(['$rootScope', function($rootScope) {
+  $rootScope.socket = io.connect('http://localhost:3000');
 }]);
