@@ -33,7 +33,9 @@ ongaku.config(['$routeProvider', '$locationProvider', '$httpProvider', function(
 }])
 .run(['$rootScope', '$timeout', 'audio', function($rootScope, $timeout, audio) {
   var init = true;
-  $rootScope.socket = io.connect('http://localhost:3000');
+  if(typeof io !== 'undefined') {
+    $rootScope.socket = io.connect('http://localhost:3000');
+  }
 
   $rootScope.song = null;
   $rootScope.$watch('song', function() {
