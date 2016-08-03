@@ -74,6 +74,10 @@ ul {
   margin-left: -5px;
   text-align: right;
 }
+/* Home */
+.home {
+  width: 60%;
+}
 /* Room */
 .avatar {
   float: left;

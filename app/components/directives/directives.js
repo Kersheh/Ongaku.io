@@ -73,18 +73,17 @@ angular.module('ongaku.directives', [])
 
       // update progress bar
       function updateBar(percent) {
-        document.getElementById('progressBar').style.width = percent + '%';
-        document.getElementById('percent').innerHTML = (Math.round(percent * 100) / 100) + '%';
+        // document.getElementById('progressBar').style.width = percent + '%';
+        $('#percentUpload').html((Math.round(percent * 100) / 100) + '%');
         // var progress = Math.round(((percent / 100.0) * file.size) / 1048576);
         // document.getElementById('MB').innerHTML = progress;
       }
 
       // upload complete
       socket.on('done', function() {
-        document.getElementById('progressBar').style.width = '100%';
-        document.getElementById('percent').innerHTML = '100%';
-        // var Content = 'Video Successfully Uploaded !!'
-        // Content += "<img id='Thumb' src='" + Path + data['Image'] + "' alt='" + Name + "'><br>";
+        // document.getElementById('progressBar').style.width = '100%';
+        $('#percentUpload').html('100%');
+        // var Content = "<img id='Thumb' src='" + Path + data['Image'] + "' alt='" + Name + "'><br>";
         // Content += "<button  type='button' name='Upload' value='' id='Restart' class='Button'>Upload Another</button>";
         // document.getElementById('UploadArea').innerHTML = Content;
         // document.getElementById('Restart').addEventListener('click', Refresh);

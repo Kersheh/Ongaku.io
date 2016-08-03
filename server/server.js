@@ -1,33 +1,27 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var app = require('express')(),
+  http = require('http').Server(app),
+  io = require('socket.io')(http);
 var fs = require('fs');
 var _ = require('underscore');
-
-// stream audio client
-function currentSong() {
-
-}
-var test = currentSong();
-
-// save audio locally to server
-function saveAudio(audio) {
-  console.log(audio);
-  fs.writeFile('/audio/test.mp3', audio, function(err) {
-    if(err) {
-      return console.log(err);
-    }
-    else {
-      console.log('Saved file.')
-    }
+var rl = require('readline'),
+  cli = rl.createInterface({
+    input: process.stdin,
+    output: process.stdout
   });
-}
+var Dj = require('./js/dj.js'),
+  dj = new Dj();
 
+/* Audio master tracker */
+
+
+// current socket connections
 var connections = [];
 
 io.on('connection', function(socket) {
   // track unique connection id
   connections.push({ id: socket.id });
+
+  /* Audio stream to client */
 
   // request for current song from client
   socket.on('get current song', function() {
@@ -40,14 +34,12 @@ io.on('connection', function(socket) {
     });
   });
 
-
-
   /* Audio upload from client */
 
   var files = {};
 
   socket.on('upload start', function(data) {
-    console.log('Starting upload');
+    log('Starting upload');
     var name = data['name'];
     files[name] = {
       fileSize: data['size'],
@@ -65,7 +57,7 @@ io.on('connection', function(socket) {
     catch(err) {}
     fs.open(__dirname + '/temp/' + name, 'a', 0755, function(err, fd) {
       if(err) {
-        console.log(err);
+        log(err);
       }
       else {
         files[name]['handler'] = fd; // store file handler
@@ -75,7 +67,7 @@ io.on('connection', function(socket) {
   });
 
   socket.on('upload', function(data) {
-    console.log('Uploading...');
+    log('Uploading...');
     var name = data['name'];
     files[name]['downloaded'] += data['data'].length;
     files[name]['data'] += data['data'];
@@ -88,6 +80,7 @@ io.on('connection', function(socket) {
         inp.pipe(outp, function() {
           fs.unlink(__dirname + '/temp/' + name, function () {});
         });
+        console.log('Upload complete');
         socket.emit('done');
       });
     }
@@ -107,10 +100,6 @@ io.on('connection', function(socket) {
     }
   });
 
-  /* Audio stream to client */
-
-  // io.emit('audio stream', audio);
-
   /* Chat */
 
   var numUsers = 0;
@@ -118,7 +107,7 @@ io.on('connection', function(socket) {
 
   // when the client emits 'new message', this listens and executes
   socket.on('new message', function(data) {
-    console.log('[' + data.time +'] ' + socket.username + ': ' + data.message);
+    log('[' + data.time +'] ' + socket.username + ': ' + data.message);
     // we tell the client to execute 'new message'
     socket.broadcast.emit('new message', {
       username: socket.username,
@@ -129,7 +118,7 @@ io.on('connection', function(socket) {
 
   // when the client emits 'add user', this listens and executes
   socket.on('add user', function(username) {
-    console.log(username + ' connected');
+    log(username + ' connected');
     if(addedUser) return;
 
     // we store the username in the socket session for this client
@@ -181,4 +170,67 @@ io.on('connection', function(socket) {
 
 http.listen(3000, function() {
   console.log('listening on *:3000');
+  process.stdout.write('ongaku> ');
+});
+
+/* Command line interface utilities */
+
+function log(str) {
+  process.stdout.write('\r\n' + str + '\r\nongaku> ');
+}
+
+function cliHelp() {
+  console.log('List of commands:');
+  console.log('| users [u]');
+  console.log('| help  [h]  exit [e]');
+}
+
+function cliUsers() {
+  if(connections.length) {
+    console.log('List of users:');
+  }
+  for(var key in connections) {
+    console.log(connections[key].id);
+  }
+  console.log('Total connected users:', connections.length);
+}
+
+function cliDj() {
+  console.log(dj.getTime());
+}
+
+/* Command line interface */
+
+const cmds = ['dj', 'd', 'users', 'u', 'help', 'h', 'exit', 'e'];
+
+// var stdin = process.stdin;
+// stdin.setRawMode(true);
+// stdin.resume();
+// stdin.setEncoding('utf8');
+
+// stdin.on('data', function(key) {
+//   // var chunk = process.stdin.read();
+//   process.stdout.write(key);
+//   // if (chunk !== null) {
+//   //   process.stdout.write(`data: ${chunk}`);
+//   // }
+// });
+
+cli.on('line', function(input) {
+  if(cmds.indexOf(input) >= 0) {
+    if(input[0] == 'd') {
+      cliDj();
+    }
+    if(input[0] == 'u') {
+      cliUsers();
+    }
+    if(input[0] == 'h') {
+      cliHelp();
+    }
+    if(input[0] == 'e') {
+      console.log('Good bye');
+      process.exit();
+    }
+  }
+  process.stdout.write('ongaku> ');
 });

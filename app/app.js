@@ -31,7 +31,7 @@ ongaku.config(['$routeProvider', '$locationProvider', '$httpProvider', function(
   // disabling # in Angular urls
   // $locationProvider.html5Mode(true);
 }])
-.run(['$rootScope', '$timeout', function($rootScope, $timeout) {
+.run(['$rootScope', '$timeout', 'audio', function($rootScope, $timeout, audio) {
   var init = true;
   $rootScope.socket = io.connect('http://localhost:3000');
 
@@ -46,4 +46,6 @@ ongaku.config(['$routeProvider', '$locationProvider', '$httpProvider', function(
       $('audio').trigger('play');
     }
   }, true);
+
+  audio.currentSong();
 }]);
