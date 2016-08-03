@@ -8,11 +8,7 @@ var rl = require('readline'),
     input: process.stdin,
     output: process.stdout
   });
-var Dj = require('./js/dj.js'),
-  dj = new Dj();
-
-/* Audio master tracker */
-
+var dj = require('./js/dj.js');
 
 // current socket connections
 var connections = [];
@@ -25,13 +21,14 @@ io.on('connection', function(socket) {
 
   // request for current song from client
   socket.on('get current song', function() {
+    socket.emit('current song', dj.getSong().data);
     // move to master audio tracker
-    fs.readFile(__dirname + '/audio/test.mp3', function(err, data) {
-      if(err) {
-        throw err;
-      }
-      socket.emit('current song', data);
-    });
+    // fs.readFile(__dirname + '/audio/test.mp3', function(err, data) {
+    //   if(err) {
+    //     throw err;
+    //   }
+    //   socket.emit('current song', data);
+    // });
   });
 
   /* Audio upload from client */
@@ -173,6 +170,10 @@ http.listen(3000, function() {
   process.stdout.write('ongaku> ');
 });
 
+/* Master audio tracker */
+
+dj.queueSong('/../audio/test.mp3');
+
 /* Command line interface utilities */
 
 function log(str) {
@@ -182,7 +183,7 @@ function log(str) {
 function cliHelp() {
   console.log('List of commands:');
   console.log('| users [u]');
-  console.log('| help  [h]  exit [e]');
+  console.log('| help  [h]  quit [q]');
 }
 
 function cliUsers() {
@@ -197,11 +198,12 @@ function cliUsers() {
 
 function cliDj() {
   console.log(dj.getTime());
+  console.log(dj.getSong().data);
 }
 
 /* Command line interface */
 
-const cmds = ['dj', 'd', 'users', 'u', 'help', 'h', 'exit', 'e'];
+const cmds = ['dj', 'd', 'users', 'u', 'help', 'h', 'quit', 'q'];
 
 // var stdin = process.stdin;
 // stdin.setRawMode(true);
@@ -227,7 +229,7 @@ cli.on('line', function(input) {
     if(input[0] == 'h') {
       cliHelp();
     }
-    if(input[0] == 'e') {
+    if(input[0] == 'q') {
       console.log('Good bye');
       process.exit();
     }
