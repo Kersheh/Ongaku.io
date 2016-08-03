@@ -21,7 +21,7 @@ io.on('connection', function(socket) {
 
   // request for current song from client
   socket.on('get current song', function() {
-    socket.emit('current song', dj.getSong().data);
+    socket.emit('current song', dj.getSong());
     // move to master audio tracker
     // fs.readFile(__dirname + '/audio/test.mp3', function(err, data) {
     //   if(err) {

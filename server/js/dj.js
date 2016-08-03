@@ -13,19 +13,34 @@ method.queueSong = function(path) {
     if(err) {
       console.log('Invalid path or file:', __dirname + path);
     }
-    dj._queue.push({ data: data });
+    dj._queue.push({
+      data: data
+    });
   });
 };
 
-// get current song
+// get current song array buffer
 method.getSong = function() {
   if(this._queue.length <= 0) {
     return null;
   }
-  return this._queue[0];
+  return this._queue[0].data;
 };
 
-// get timestamp of current song
+// get current song metadata
+method.getSongMeta = function() {
+  if(this._queue.length <= 0) {
+    return null;
+  }
+  var song = this._queue[0];
+  return {
+    title: song.title,
+    length: song.length,
+    artwork: song.artwork
+  };
+};
+
+// get timestamp of master player
 method.getTime = function() {
   return this._time;
 };
