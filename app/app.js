@@ -1,5 +1,3 @@
-'use strict';
-
 var ongaku = angular.module('ongaku', [
   'ngRoute',
   'ongaku.home',
@@ -33,6 +31,19 @@ ongaku.config(['$routeProvider', '$locationProvider', '$httpProvider', function(
   // disabling # in Angular urls
   // $locationProvider.html5Mode(true);
 }])
-.run(['$rootScope', function($rootScope) {
+.run(['$rootScope', '$timeout', function($rootScope, $timeout) {
+  var init = true;
   $rootScope.socket = io.connect('http://localhost:3000');
+
+  $rootScope.song = null;
+  $rootScope.$watch('song', function() {
+    if(init) {
+      $timeout(function() { init = false; });
+    }
+    else {
+      $('audio').attr('src', $rootScope.song);
+      $('audio').trigger('load');
+      $('audio').trigger('play');
+    }
+  }, true);
 }]);

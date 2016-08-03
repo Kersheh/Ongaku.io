@@ -2,16 +2,13 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
+var _ = require('underscore');
 
 // stream audio client
-var audio;
-fs.readFile(__dirname + '/audio/test.mp3', function(err, data) {
-  if(err) {
-    throw err;
-  }
-  // console.log(data);
-  audio = data;
-});
+function currentSong() {
+
+}
+var test = currentSong();
 
 // save audio locally to server
 function saveAudio(audio) {
@@ -26,11 +23,26 @@ function saveAudio(audio) {
   });
 }
 
+var connections = [];
+
 io.on('connection', function(socket) {
+  // track unique connection id
+  connections.push({ id: socket.id });
+
+  // request for current song from client
   socket.on('get current song', function() {
-    socket.emit('current song', 'Hello world');
+    // move to master audio tracker
+    fs.readFile(__dirname + '/audio/test.mp3', function(err, data) {
+      if(err) {
+        throw err;
+      }
+      socket.emit('current song', data);
+    });
   });
-  /* Audio Upload from Client */
+
+
+
+  /* Audio upload from client */
 
   var files = {};
 
@@ -74,11 +86,9 @@ io.on('connection', function(socket) {
         var inp = fs.createReadStream(__dirname + '/temp/' + name);
         var outp = fs.createWriteStream(__dirname + '/audio/' + name);
         inp.pipe(outp, function() {
-          fs.unlink(__dirname + '/temp/' + name, function () {
-            // moving file completed
-            socket.emit('upload complete', {'Image' : 'Video/' + Name + '.jpg'});
-          });
+          fs.unlink(__dirname + '/temp/' + name, function () {});
         });
+        socket.emit('done');
       });
     }
     // if the data buffer reaches 10MB
@@ -97,9 +107,9 @@ io.on('connection', function(socket) {
     }
   });
 
-  /* Audio Stream to Client */
+  /* Audio stream to client */
 
-  io.emit('audio stream', audio);
+  // io.emit('audio stream', audio);
 
   /* Chat */
 
@@ -152,7 +162,9 @@ io.on('connection', function(socket) {
 
   // when the user disconnects.. perform this
   socket.on('disconnect', function() {
-    if (addedUser) {
+    // remove disconnected id
+    connections = _.reject(connections, function(obj) { return obj.id == socket.id; });
+    if(addedUser) {
       numUsers--;
 
       // echo globally that this client has left

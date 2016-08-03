@@ -24,17 +24,19 @@ angular.module('ongaku.services', [])
     }
   };
 })
-.factory('audio', function($rootScope) {
+.factory('audio', ['$rootScope', function($rootScope) {
   return {
     // get current song
     currentSong: function() {
       $rootScope.socket.on('current song', function(data) {
-        console.log(data);
+        var audioBlob = new Blob([data], {type: 'audio/mpeg'});
+        $rootScope.song = URL.createObjectURL(audioBlob);
+        $rootScope.$apply();
       });
       $rootScope.socket.emit('get current song');
     }
   };
-})
+}])
 .factory('timestamp', function($rootScope) {
   return {
     // get current time as formatted string

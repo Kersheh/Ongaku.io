@@ -1,31 +1,34 @@
 angular.module('ongaku.directives', [])
 // audio player
-.directive('audioPlayer', ['socket', function(socket) {
+.directive('audioPlayer', ['$rootScope', 'socket', function($rootScope, socket) {
   return {
     restrict: 'A',
     templateUrl: 'app/components/directives/audio_player.html',
     link: function(scope, element, attrs) {
+      // watch for song change
+
+
       // incoming audio from server
-      socket.on('audio stream', function(data) {
-        var audioBlob = new Blob([data], {type: 'audio/mpeg'});
-        var url = URL.createObjectURL(audioBlob);
-        $('audio').attr('src', url);
-        $('audio').trigger('load');
-        $('audio').trigger('play');
+      // socket.on('audio stream', function(data) {
+        // var audioBlob = new Blob([data], {type: 'audio/mpeg'});
+        // var url = URL.createObjectURL(audioBlob);
+        // $('audio').attr('src', url);
+        // $('audio').trigger('load');
+        // $('audio').trigger('play');
 
         // mp3 metadata
-        var jsmediatags = window.jsmediatags;
-        jsmediatags.read(audioBlob, {
-          onSuccess: function(tag) {
-            var arrayBufferView = new Uint8Array(tag.tags.picture.data);
-            var imageBlob = new Blob([arrayBufferView], { type: 'image/jpeg' });
-            $('#photo').attr('src', URL.createObjectURL(imageBlob));
-          },
-          onError: function(error) {
-            // console.log(error);
-          }
-        });
-      });
+        // var jsmediatags = window.jsmediatags;
+        // jsmediatags.read(audioBlob, {
+        //   onSuccess: function(tag) {
+        //     var arrayBufferView = new Uint8Array(tag.tags.picture.data);
+        //     var imageBlob = new Blob([arrayBufferView], { type: 'image/jpeg' });
+        //     $('#photo').attr('src', URL.createObjectURL(imageBlob));
+        //   },
+        //   onError: function(error) {
+        //     // console.log(error);
+        //   }
+        // });
+      // });
     }
   };
 }])
@@ -45,7 +48,6 @@ angular.module('ongaku.directives', [])
               socket.emit('upload', { 'name': name, data: event.target.result });
             };
             socket.emit('upload start', { 'name': name, 'size': file.size });
-            // reader.readAsBinaryString(file);
           });
           // attach event listener to filebox
           $('#fileBox').change(function() {
@@ -62,8 +64,8 @@ angular.module('ongaku.directives', [])
 
       // client response on server request to continue upload
       socket.on('request data', function (data) {
-        updateBar(data['percent']);
-        var place = data['place'] * 524288;
+        updateBar(data.percent);
+        var place = data.place * 524288;
         var newFile;
         newFile = file.slice(place, place + Math.min(524288, (file.size - place)));
         reader.readAsBinaryString(newFile);
@@ -78,12 +80,14 @@ angular.module('ongaku.directives', [])
       }
 
       // upload complete
-      socket.on('Done', function (data){
-        var Content = "Video Successfully Uploaded !!"
-        Content += "<img id='Thumb' src='" + Path + data['Image'] + "' alt='" + Name + "'><br>";
-        Content += "<button  type='button' name='Upload' value='' id='Restart' class='Button'>Upload Another</button>";
-        document.getElementById('UploadArea').innerHTML = Content;
-        document.getElementById('Restart').addEventListener('click', Refresh);
+      socket.on('done', function() {
+        document.getElementById('progressBar').style.width = '100%';
+        document.getElementById('percent').innerHTML = '100%';
+        // var Content = 'Video Successfully Uploaded !!'
+        // Content += "<img id='Thumb' src='" + Path + data['Image'] + "' alt='" + Name + "'><br>";
+        // Content += "<button  type='button' name='Upload' value='' id='Restart' class='Button'>Upload Another</button>";
+        // document.getElementById('UploadArea').innerHTML = Content;
+        // document.getElementById('Restart').addEventListener('click', Refresh);
       });
     }
   };
