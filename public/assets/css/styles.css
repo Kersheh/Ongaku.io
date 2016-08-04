@@ -1,0 +1,198 @@
+body {
+  height: 100%;
+  margin: 0 auto;
+  padding: 0;
+  color: #333;
+  background-color: #F6F6F4;
+  line-height: 1.5;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 10pt;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+a {
+  color: #555;
+}
+a:hover,
+a:focus {
+  color: #333;
+  text-decoration: none;
+}
+.content {
+  min-height: 100%;
+  padding-left: 170px;
+  width: 80%;
+}
+h1 {
+  font-family: "GillSans-Light", "Gill Sans-Light", "Gill Sans Light", "Gill Sans", "Gill Sans MT", "Lato", "Futura", "Segoe UI", "Trebuchet MS", sans-serif;
+  font-weight: 300 !important;
+  text-transform: uppercase;
+}
+h2,
+h3 {
+  font-family: "Gill Sans", "Gill Sans MT", "Lato", "Futura", "Segoe UI", "Corbel", "Trebuchet MS", sans-serif;
+  text-transform: uppercase;
+}
+h1,
+h2,
+h3 {
+  font-weight: normal;
+  text-transform: uppercase;
+  color: #404040;
+}
+ul {
+  list-style: none;
+  word-wrap: break-word;
+}
+.github {
+  font-size: 30px;
+  position: absolute;
+  padding: 5px;
+  bottom: 0;
+}
+/* Nav */
+.sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-height: 100%;
+  width: 150px;
+  padding: 0 10px;
+  overflow: hidden;
+}
+.sidebar br.spacer {
+  clear: both;
+  height: 20px;
+}
+.sidebar-left {
+  padding: 0 15px 0 5px;
+  text-align: right;
+  border-right: 1px solid #DDD;
+}
+.sidebar-left ul {
+  text-align: right;
+}
+.sidebar-left li {
+  list-style: none;
+}
+.sidebar h2 {
+  font-size: 18px;
+  margin-left: -5px;
+  text-align: right;
+}
+/* Home */
+.home {
+  width: 60%;
+}
+/* Room */
+.avatar {
+  float: left;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 6px;
+  top: 1px;
+  z-index: 4;
+  border-right: 1px solid #eeeee5;
+}
+.mini-avatar {
+  float: none;
+  display: inline-block;
+  height: 18px;
+  width: 18px;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  margin-right: -1px;
+  margin-bottom: -1px;
+}
+/* Pages */
+.pages {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 50%;
+  min-width: 300px;
+}
+.page {
+  height: 100%;
+  width: 100%;
+  border: 1px solid #DDD;
+  padding: 10px;
+}
+.login.page .form {
+  height: 100px;
+  text-align: center;
+  top: 100%;
+  width: 100%;
+}
+.login.page .form .usernameInput {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #fff;
+  outline: none;
+  text-align: center;
+  width: 90%;
+}
+.login.page .title {
+  font-size: 200%;
+}
+.login.page .usernameInput {
+  font-size: 200%;
+  letter-spacing: 3px;
+}
+.login.page .title,
+.login.page .usernameInput {
+  font-weight: 100;
+}
+.chat.page {
+  display: none;
+}
+/* Messages */
+.inputMessage {
+  font-size: 100%;
+}
+.log {
+  color: gray;
+  font-size: 70%;
+  margin: 5px;
+  text-align: center;
+}
+.chatArea {
+  height: 335px;
+}
+.messages {
+  font-size: 115%;
+  height: 100%;
+  margin: 0;
+  overflow-y: scroll;
+  padding: 10px 10px 10px 10px;
+}
+.message.typing .messageBody {
+  color: gray;
+}
+a.messageLink {
+  color: #07C;
+}
+.time {
+  overflow: hidden;
+  font-size: 14px;
+  padding-top: 2px;
+  padding-right: 5px;
+  text-align: right;
+}
+.username {
+  font-weight: 700;
+  overflow: hidden;
+  padding-right: 15px;
+  text-align: right;
+}
+/* Input */
+.inputMessage {
+  border: 1px solid #DDD;
+  height: 40px;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+}
+/* Audio */

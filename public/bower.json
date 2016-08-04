@@ -1,0 +1,23 @@
+{
+  "name": "ongaku.io",
+  "main": "app.js",
+  "authors": [
+    "Matthew Breckon <mattbreckon@gmail.com>"
+  ],
+  "license": "ISC",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.6",
+    "angular-route": "^1.5.6",
+    "bootstrap": "^3.3.6",
+    "font-awesome": "^4.6.3",
+    "jquery": "^3.0.0"
+  }
+}

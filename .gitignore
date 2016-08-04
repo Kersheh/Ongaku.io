@@ -1,5 +1,10 @@
+# System files
 .DS_Store
-bower_components/
+
+# Server
+temp/
+audio/
+
+# Components
+public/bower_components/
 node_modules/
-server/temp/
-server/audio/
