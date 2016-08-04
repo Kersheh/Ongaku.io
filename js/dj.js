@@ -25,6 +25,7 @@ method.getSong = function() {
   if(this._queue.length <= 0) {
     return null;
   }
+  console.log(this._queue[0].data);
   return this._queue[0].data;
 };
 

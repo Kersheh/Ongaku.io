@@ -1,7 +1,5 @@
 angular.module('ongaku.room', [])
-.controller('RoomCtrl', ['$scope', 'audio', 'socket', 'timestamp', 'url', function($scope, audio, socket, timestamp, url) {
-
-  // audio.currentSong();
+.controller('RoomCtrl', ['$scope', 'socket', 'timestamp', 'url', function($scope, socket, timestamp, url) {
 
   /* Chat */
 

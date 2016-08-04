@@ -49,6 +49,7 @@ io.on('connection', function(socket) {
   // request for current song from client
   socket.on('get current song', function() {
     var audio = dj.getSong();
+    console.log(audio);
     if(audio !== null) {
       socket.emit('current song', audio);
     }

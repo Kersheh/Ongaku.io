@@ -38,7 +38,7 @@ ongaku.config(['$routeProvider', '$locationProvider', '$httpProvider', function(
   }
 
   $rootScope.audio = null;
-  $rootScope.$watch('song', function() {
+  $rootScope.$watch('audio', function() {
     if(init) {
       $timeout(function() { init = false; });
     }

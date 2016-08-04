@@ -63,7 +63,7 @@ angular.module('ongaku.directives', [])
       }
 
       // client response on server request to continue upload
-      socket.on('request data', function (data) {
+      socket.on('request data', function(data) {
         updateBar(data.percent);
         var place = data.place * 524288;
         var newFile;
