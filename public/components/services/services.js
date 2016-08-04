@@ -32,7 +32,7 @@ angular.module('ongaku.services', [])
         $rootScope.socket.on('current song', function(data) {
           if(data !== null) {
             var audioBlob = new Blob([data], {type: 'audio/mpeg'});
-            $rootScope.song = URL.createObjectURL(audioBlob);
+            $rootScope.audio = URL.createObjectURL(audioBlob);
             $rootScope.$apply();
           }
         });

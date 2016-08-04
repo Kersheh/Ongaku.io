@@ -29,7 +29,7 @@ ongaku.config(['$routeProvider', '$locationProvider', '$httpProvider', function(
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
   // disabling # in Angular urls
-  // $locationProvider.html5Mode(true);
+  $locationProvider.html5Mode(true);
 }])
 .run(['$rootScope', '$timeout', 'audio', function($rootScope, $timeout, audio) {
   var init = true;
@@ -37,13 +37,13 @@ ongaku.config(['$routeProvider', '$locationProvider', '$httpProvider', function(
     $rootScope.socket = io.connect();
   }
 
-  $rootScope.song = null;
+  $rootScope.audio = null;
   $rootScope.$watch('song', function() {
     if(init) {
       $timeout(function() { init = false; });
     }
     else {
-      $('audio').attr('src', $rootScope.song);
+      $('audio').attr('src', $rootScope.audio);
       $('audio').trigger('load');
       $('audio').trigger('play');
     }

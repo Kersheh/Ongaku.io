@@ -11,6 +11,8 @@ var rl = require('readline'),
   });
 var dj = require('./js/dj.js');
 
+/* Utility */
+
 // create audio directories if not found
 var mkdirSync = function(path) {
   try {
@@ -24,10 +26,16 @@ var mkdirSync = function(path) {
 mkdirSync('./audio');
 mkdirSync('./temp');
 
-// server config
+/* Server config */
+
 var port = process.env.PORT || 8080;
 app.use('/', express.static(__dirname + '/public'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
+app.use(function(req, res) {
+  res.sendFile(__dirname + '/public/index.html'); // rerouting middleware
+});
+
+/* Socket io */
 
 // current socket connections
 var connections = [];
@@ -40,7 +48,10 @@ io.on('connection', function(socket) {
 
   // request for current song from client
   socket.on('get current song', function() {
-    socket.emit('current song', dj.getSong());
+    var audio = dj.getSong();
+    if(audio !== null) {
+      socket.emit('current song', audio);
+    }
   });
 
   /* Audio upload from client */
@@ -91,7 +102,7 @@ io.on('connection', function(socket) {
         console.log('Upload complete');
         // queue up uploaded song
         dj.queueSong('/../audio/' + name, function() {
-          socket.emit('current song', dj.getSong()); // TESTING - should not
+          io.emit('current song', dj.getSong()); // TESTING - should not be immediate
         });
         socket.emit('upload complete');
       });
@@ -182,7 +193,7 @@ io.on('connection', function(socket) {
 
 http.listen(port, function() {
   console.log('listening on *:', port);
-  process.stdout.write('ongaku> ');
+  // process.stdout.write('ongaku> ');
 });
 
 /* Master audio tracker */
