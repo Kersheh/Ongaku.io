@@ -9,12 +9,12 @@ var rl = require('readline'),
     input: process.stdin,
     output: process.stdout
   });
-var dj = require('./js/dj.js');
+var dj = require('./media/dj.js');
 
 /* Utility */
 
 // create audio directories if not found
-var mkdirSync = function(path) {
+function mkdirSync(path) {
   try {
     fs.mkdirSync(path);
   } catch(err) {
@@ -23,8 +23,8 @@ var mkdirSync = function(path) {
     }
   }
 }
-mkdirSync('./audio');
-mkdirSync('./temp');
+mkdirSync('./media/audio');
+mkdirSync('./media/temp');
 
 /* Server config */
 
@@ -34,6 +34,20 @@ app.use('/bower_components', express.static(__dirname + '/bower_components'));
 app.use(function(req, res) {
   res.sendFile(__dirname + '/public/index.html'); // rerouting middleware
 });
+
+/* Chat command parser */
+
+function parseCommand(string) {
+  var cmd = string.split(" ", 1);
+  if(string.substring(0, 1) == '/') {
+    // skip current song in queue
+    if(cmd == '/skip' || cmd == '/next') {
+      dj.skipSong(function() {
+        io.emit('current song', dj.getSong());
+      });
+    }
+  }
+}
 
 /* Socket io */
 
@@ -49,7 +63,6 @@ io.on('connection', function(socket) {
   // request for current song from client
   socket.on('get current song', function() {
     var audio = dj.getSong();
-    console.log(audio);
     if(audio !== null) {
       socket.emit('current song', audio);
     }
@@ -69,13 +82,13 @@ io.on('connection', function(socket) {
     }
     var place = 0;
     try {
-      var stat = fs.statSync(__dirname + '/temp/' + name);
+      var stat = fs.statSync(__dirname + '/media/temp/' + name);
       if(stat.isFile()) {
         files[name]['downloaded'] = stat.size;
         place = stat.size / 524288;
       }
     } catch(err) {}
-    fs.open(__dirname + '/temp/' + name, 'a', 0755, function(err, fd) {
+    fs.open(__dirname + '/media/temp/' + name, 'a', 0755, function(err, fd) {
       if(err) {
         log(err);
       }
@@ -87,7 +100,6 @@ io.on('connection', function(socket) {
   });
 
   socket.on('upload', function(data) {
-    log('Uploading...');
     var name = data['name'];
     files[name]['downloaded'] += data['data'].length;
     files[name]['data'] += data['data'];
@@ -95,14 +107,16 @@ io.on('connection', function(socket) {
     // if file is fully uploaded
     if(files[name]['downloaded'] == files[name]['fileSize']) {
       fs.write(files[name]['handler'], files[name]['data'], null, 'binary', function(err, write) {
-        var inp = fs.createReadStream(__dirname + '/temp/' + name);
-        var outp = fs.createWriteStream(__dirname + '/audio/' + name);
+        var inp = fs.createReadStream(__dirname + '/media/temp/' + name);
+        var outp = fs.createWriteStream(__dirname + '/media/audio/' + name);
         inp.pipe(outp, function() {
-          fs.unlink(__dirname + '/temp/' + name, function () {});
+          fs.unlink(__dirname + '/media/temp/' + name, function () {
+            console.log('unlink complete');
+          });
         });
         console.log('Upload complete');
         // queue up uploaded song
-        dj.queueSong('/../audio/' + name, function() {
+        dj.queueSong('/audio/' + name, function() {
           io.emit('current song', dj.getSong()); // TESTING - should not be immediate
         });
         socket.emit('upload complete');
@@ -126,12 +140,17 @@ io.on('connection', function(socket) {
 
   /* Chat */
 
+  //
+
   var numUsers = 0;
   var addedUser = false;
 
   // when the client emits 'new message', this listens and executes
   socket.on('new message', function(data) {
+    // log chat message
     log('[' + data.time +'] ' + socket.username + ': ' + data.message);
+    // parse string for potential command
+    parseCommand(data.message);
     // we tell the client to execute 'new message'
     socket.broadcast.emit('new message', {
       username: socket.username,
@@ -226,7 +245,7 @@ function cliUsers() {
 
 function cliDj() {
   console.log(dj.getTime());
-  console.log(dj.getSong());
+  dj.getSong();
 }
 
 /* Command line interface */

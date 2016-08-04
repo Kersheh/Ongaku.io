@@ -1,4 +1,5 @@
 var fs = require('fs');
+var mm = require('musicmetadata');
 
 var method = Dj.prototype;
 function Dj() {
@@ -9,14 +10,33 @@ function Dj() {
 // queue up song
 method.queueSong = function(path, callback) {
   var dj = this;
+  var song;
+  var filename = path.replace('/audio/', '');
+
+  // load audio data
   fs.readFile(__dirname + path, function(err, data) {
     if(err) {
-      console.log('Invalid path or file:', __dirname + path);
+      throw err;
     }
+    // queue raw audio data with filename
     dj._queue.push({
+      filename: filename,
       data: data
     });
-    callback();
+    song = dj._queue[0]; // reference pushed song to add metadata
+    // retrieve metadata
+    mm(fs.createReadStream(__dirname + path), { duration: true }, function(err, metadata) {
+      if(err) {
+        throw err;
+      }
+      song.title = metadata.title;
+      song.artist = metadata.artist;
+      song.album = metadata.album;
+      song.image = metadata.picture;
+      song.length = metadata.duration;
+
+      callback();
+    });
   });
 };
 
@@ -25,7 +45,6 @@ method.getSong = function() {
   if(this._queue.length <= 0) {
     return null;
   }
-  console.log(this._queue[0].data);
   return this._queue[0].data;
 };
 
@@ -40,6 +59,14 @@ method.getSongInfo = function() {
     length: song.length,
     artwork: song.artwork
   };
+};
+
+// skip current song
+method.skipSong = function(callback) {
+  if(this._queue.length > 0) {
+    this._queue.shift();
+    callback();
+  }
 };
 
 // get timestamp of master player

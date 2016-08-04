@@ -2,8 +2,8 @@
 .DS_Store
 
 # Server
-temp/
-audio/
+media/temp/
+media/audio/
 ref/
 
 # Components
