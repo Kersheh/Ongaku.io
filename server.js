@@ -11,6 +11,19 @@ var rl = require('readline'),
   });
 var dj = require('./js/dj.js');
 
+// create audio directories if not found
+var mkdirSync = function(path) {
+  try {
+    fs.mkdirSync(path);
+  } catch(err) {
+    if(err.code != 'EEXIST') {
+      throw err;
+    }
+  }
+}
+mkdirSync('./audio');
+mkdirSync('./temp');
+
 // server config
 var port = process.env.PORT || 8080;
 app.use('/', express.static(__dirname + '/public'));
@@ -49,8 +62,7 @@ io.on('connection', function(socket) {
         files[name]['downloaded'] = stat.size;
         place = stat.size / 524288;
       }
-    }
-    catch(err) {}
+    } catch(err) {}
     fs.open(__dirname + '/temp/' + name, 'a', 0755, function(err, fd) {
       if(err) {
         log(err);
