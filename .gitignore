@@ -4,6 +4,7 @@
 # Server
 temp/
 audio/
+ref/
 
 # Components
 public/bower_components/
