@@ -14,6 +14,7 @@ var dj = require('./js/dj.js');
 // server config
 var port = process.env.PORT || 8080;
 app.use('/', express.static(__dirname + '/public'));
+app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
 // current socket connections
 var connections = [];
