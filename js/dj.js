@@ -7,7 +7,7 @@ function Dj() {
 }
 
 // queue up song
-method.queueSong = function(path) {
+method.queueSong = function(path, callback) {
   var dj = this;
   fs.readFile(__dirname + path, function(err, data) {
     if(err) {
@@ -16,6 +16,7 @@ method.queueSong = function(path) {
     dj._queue.push({
       data: data
     });
+    callback();
   });
 };
 
@@ -28,7 +29,7 @@ method.getSong = function() {
 };
 
 // get current song metadata
-method.getSongMeta = function() {
+method.getSongInfo = function() {
   if(this._queue.length <= 0) {
     return null;
   }

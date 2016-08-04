@@ -80,7 +80,7 @@ angular.module('ongaku.directives', [])
       }
 
       // upload complete
-      socket.on('done', function() {
+      socket.on('upload complete', function() {
         // document.getElementById('progressBar').style.width = '100%';
         $('#percentUpload').html('100%');
         // var Content = "<img id='Thumb' src='" + Path + data['Image'] + "' alt='" + Name + "'><br>";

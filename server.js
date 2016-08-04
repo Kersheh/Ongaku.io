@@ -28,13 +28,6 @@ io.on('connection', function(socket) {
   // request for current song from client
   socket.on('get current song', function() {
     socket.emit('current song', dj.getSong());
-    // move to master audio tracker
-    // fs.readFile(__dirname + '/audio/test.mp3', function(err, data) {
-    //   if(err) {
-    //     throw err;
-    //   }
-    //   socket.emit('current song', data);
-    // });
   });
 
   /* Audio upload from client */
@@ -84,7 +77,11 @@ io.on('connection', function(socket) {
           fs.unlink(__dirname + '/temp/' + name, function () {});
         });
         console.log('Upload complete');
-        socket.emit('done');
+        // queue up uploaded song
+        dj.queueSong('/../audio/' + name, function() {
+          socket.emit('current song', dj.getSong()); // TESTING - should not
+        });
+        socket.emit('upload complete');
       });
     }
     // if the data buffer reaches 10MB
@@ -178,7 +175,8 @@ http.listen(port, function() {
 
 /* Master audio tracker */
 
-dj.queueSong('/../audio/test.mp3');
+// dj.queueSong('/../audio/test.mp3');
+
 
 /* Command line interface utilities */
 
@@ -204,7 +202,7 @@ function cliUsers() {
 
 function cliDj() {
   console.log(dj.getTime());
-  console.log(dj.getSong().data);
+  console.log(dj.getSong());
 }
 
 /* Command line interface */

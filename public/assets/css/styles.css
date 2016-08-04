@@ -195,4 +195,13 @@ a.messageLink {
   padding-right: 10px;
   width: 100%;
 }
-/* Audio */
+/* Audio Player */
+.audioPlayer {
+  position: fixed;
+  bottom: 0;
+  left: 150px;
+  width: 100%;
+  background-color: #F2F2F2;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  height: 46px;
+}
