@@ -126,7 +126,7 @@ io.on('connection', function(socket) {
         log('Upload complete:', name);
         socket.emit('upload complete');
         // queue up uploaded song
-        dj.queueSong('/media/audio/' + name);
+        dj.queueSong('/media/audio/' + name, io);
       });
     }
     // if the data buffer reaches 10MB
@@ -197,13 +197,12 @@ io.on('connection', function(socket) {
     });
   });
 
-  // when the user disconnects.. perform this
+  // when the user disconnects
   socket.on('disconnect', function() {
     // remove disconnected id
     connections = _.reject(connections, function(obj) { return obj.id == socket.id; });
     if(addedUser) {
       numUsers--;
-
       // echo globally that this client has left
       socket.broadcast.emit('user left', {
         username: socket.username,
@@ -211,7 +210,6 @@ io.on('connection', function(socket) {
       });
     }
   });
-
 });
 
 /* Server */

@@ -43,7 +43,7 @@ method.playSong = function() {
 };
 
 // queue up song
-method.queueSong = function(path) {
+method.queueSong = function(path, io) {
   var dj = this;
   var song;
   var filename = path.replace('/media/audio/', '');
@@ -71,6 +71,7 @@ method.queueSong = function(path) {
       song.time_length = metadata.duration;
       song.time_remain = metadata.duration;
 
+      io.emit('update queue', song); // hacky coupled callback
       if(!dj._playing) {
         dj.playSong();
       }

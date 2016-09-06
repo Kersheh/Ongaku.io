@@ -6,6 +6,9 @@ angular.module('ongaku.directives', [])
   // current song timer
   var startTimer = function() {
     setInterval(function() {
+      if(typeof $rootScope.audio_queue[0] === 'undefined' || $rootScope.audio_queue.length === 0) {
+        clearInterval(this);
+      }
       $rootScope.audio_queue[0].time_remain = $rootScope.audio_queue[0].time_remain - 1;
       if($rootScope.audio_queue[0].time_remain <= 0) {
         clearInterval(this);
