@@ -1,3 +1,9 @@
-<audio class="audioPlayer" controls preload="none">
-  <source type="audio/mpeg">
-</audio>
+<div class="audioPlayer">
+  <div class="audioInfo">
+    <div ng-if="audio_queue[0]">{{ audio_queue[0].artist }} - {{ audio_queue[0].title }} | {{ audio_queue[0].time_remain }} : {{ audio_queue[0].time_length }}</div>
+  </div>
+
+  <audio controls preload="none">
+    <source type="audio/mpeg">
+  </audio>
+</div>

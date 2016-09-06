@@ -31,23 +31,41 @@ ongaku.config(['$routeProvider', '$locationProvider', '$httpProvider', function(
   // disabling # in Angular urls
   $locationProvider.html5Mode(true);
 }])
-.run(['$rootScope', '$timeout', 'audio', function($rootScope, $timeout, audio) {
+.run(['$rootScope', '$timeout', function($rootScope, $timeout) {
   var init = true;
   if(typeof io !== 'undefined') {
     $rootScope.socket = io.connect();
   }
 
-  $rootScope.audio = null;
-  $rootScope.$watch('audio', function() {
-    if(init) {
-      $timeout(function() { init = false; });
-    }
-    else {
-      $('audio').attr('src', $rootScope.audio);
-      $('audio').trigger('load');
-      $('audio').trigger('play');
-    }
-  }, true);
+  $rootScope.audio_queue = [];
 
-  audio.currentSong();
+  // $rootScope.audio = null;
+  // $rootScope.audio_info = {
+  //   title: '',
+  //   artist: '',
+  //   album: '',
+  //   artwork: null,
+  //   length: 0,
+  //   remain: 0
+  // };
+  // $rootScope.$watch('audio', function() {
+  //   if(init) {
+  //     $timeout(function() { init = false; });
+  //   }
+  //   else {
+  //     $('audio').attr('src', $rootScope.audio);
+  //     $('audio').trigger('load');
+  //     $('audio').oncanplay = function() {
+  //       $(this)[0].currentTime = $rootScope.audio_info.length - $rootScope.audio_info.remain;
+  //     };
+  //     $('audio').trigger('play');
+  //   }
+  // }, true);
+
+  // $('audio').bind('canplay', function() {
+  //   console.log('test');
+  //   $(this)[0].currentTime = $rootScope.audio_info.length - $rootScope.audio_info.remain;
+  // });
+
+  // audio.currentSong();
 }]);

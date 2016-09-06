@@ -1,34 +1,62 @@
 angular.module('ongaku.directives', [])
 // audio player
 .directive('audioPlayer', ['$rootScope', 'socket', function($rootScope, socket) {
+  var playing = false;
+
+  // current song timer
+  var startTimer = function() {
+    setInterval(function() {
+      $rootScope.audio_queue[0].time_remain = $rootScope.audio_queue[0].time_remain - 1;
+      if($rootScope.audio_queue[0].time_remain <= 0) {
+        clearInterval(this);
+        nextSong();
+      }
+    }, 1000);
+  };
+
+  // play audio at top of queue
+  var playSong = function() {
+    playing = true;
+    var audioBlob = new Blob([$rootScope.audio_queue[0].data], { type: 'audio/mpeg' });
+    var audioURL = URL.createObjectURL(audioBlob);
+    $('audio').attr('src', audioURL);
+    $('audio').trigger('load');
+    // set audio remaining time
+    $('audio')[0].currentTime = $rootScope.audio_queue[0].time_length - $rootScope.audio_queue[0].time_remain;
+    $('audio').trigger('play');
+    startTimer();
+  };
+
+  // play next song
+  var nextSong = function() {
+    $rootScope.audio_queue.shift();
+    if($rootScope.audio_queue.length > 0) {
+      playSong();
+    }
+  };
+
   return {
     restrict: 'A',
     templateUrl: 'components/directives/audio_player.html',
     link: function(scope, element, attrs) {
-      // watch for song change
-
-
-      // incoming audio from server
-      // socket.on('audio stream', function(data) {
-        // var audioBlob = new Blob([data], {type: 'audio/mpeg'});
-        // var url = URL.createObjectURL(audioBlob);
-        // $('audio').attr('src', url);
-        // $('audio').trigger('load');
-        // $('audio').trigger('play');
-
-        // mp3 metadata
-        // var jsmediatags = window.jsmediatags;
-        // jsmediatags.read(audioBlob, {
-        //   onSuccess: function(tag) {
-        //     var arrayBufferView = new Uint8Array(tag.tags.picture.data);
-        //     var imageBlob = new Blob([arrayBufferView], { type: 'image/jpeg' });
-        //     $('#photo').attr('src', URL.createObjectURL(imageBlob));
-        //   },
-        //   onError: function(error) {
-        //     // console.log(error);
-        //   }
-        // });
-      // });
+      // retrieve server queue on load
+      if($rootScope.socket) {
+        socket.emit('get queue');
+        // load queue from server
+        socket.on('queue', function(data) {
+          $rootScope.audio_queue = data;
+          if($rootScope.audio_queue.length > 0) {
+            playSong();
+          }
+        });
+        // update queue from server
+        socket.on('update queue', function(data) {
+          $rootScope.audio_queue.push(data);
+          if(!playing) {
+            playSong();
+          }
+        });
+      }
     }
   };
 }])

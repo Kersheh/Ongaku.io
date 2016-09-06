@@ -9,7 +9,7 @@ var rl = require('readline'),
     input: process.stdin,
     output: process.stdout
   });
-var dj = require('./media/dj.js');
+var dj = require('./dj.js');
 
 /* Utility */
 
@@ -35,20 +35,6 @@ app.use(function(req, res) {
   res.sendFile(__dirname + '/public/index.html'); // rerouting middleware
 });
 
-/* Chat command parser */
-
-function parseCommand(string) {
-  var cmd = string.split(" ", 1);
-  if(string.substring(0, 1) == '/') {
-    // skip current song in queue
-    if(cmd == '/skip' || cmd == '/next') {
-      dj.skipSong(function() {
-        io.emit('current song', dj.getSong());
-      });
-    }
-  }
-}
-
 /* Socket io */
 
 // current socket connections
@@ -58,13 +44,38 @@ io.on('connection', function(socket) {
   // track unique connection id
   connections.push({ id: socket.id });
 
+  /* Socket utility */
+
+  // chat command parser
+  function parseCommand(string) {
+    var cmd = string.split(' ', 1);
+    if(string.substring(0, 1) == '/') {
+      // skip current song in queue
+      if(cmd == '/help') {
+        socket.emit('command response', '[Commands]   Help: /help | Skip song: /skip');
+      }
+      if(cmd == '/skip' || cmd == '/next') {
+        socket.emit('command response', 'Changing song');
+        dj.skipSong(function() {
+          io.emit('current song', dj.getSong());
+        });
+      }
+    }
+  }
+
   /* Audio stream to client */
+
+  // request for queue of songs
+  socket.on('get queue', function() {
+    socket.emit('queue', dj.getQueue());
+  });
 
   // request for current song from client
   socket.on('get current song', function() {
     var audio = dj.getSong();
     if(audio !== null) {
       socket.emit('current song', audio);
+      socket.emit('current song info', dj.getSongInfo());
     }
   });
 
@@ -73,13 +84,13 @@ io.on('connection', function(socket) {
   var files = {};
 
   socket.on('upload start', function(data) {
-    log('Starting upload');
     var name = data['name'];
+    log('Starting upload:', name);
     files[name] = {
       fileSize: data['size'],
       data: '',
       downloaded: 0
-    }
+    };
     var place = 0;
     try {
       var stat = fs.statSync(__dirname + '/media/temp/' + name);
@@ -110,16 +121,12 @@ io.on('connection', function(socket) {
         var inp = fs.createReadStream(__dirname + '/media/temp/' + name);
         var outp = fs.createWriteStream(__dirname + '/media/audio/' + name);
         inp.pipe(outp, function() {
-          fs.unlink(__dirname + '/media/temp/' + name, function () {
-            console.log('unlink complete');
-          });
+          fs.unlink(__dirname + '/media/temp/' + name, function () {});
         });
-        console.log('Upload complete');
-        // queue up uploaded song
-        dj.queueSong('/audio/' + name, function() {
-          io.emit('current song', dj.getSong()); // TESTING - should not be immediate
-        });
+        log('Upload complete:', name);
         socket.emit('upload complete');
+        // queue up uploaded song
+        dj.queueSong('/media/audio/' + name);
       });
     }
     // if the data buffer reaches 10MB
@@ -140,8 +147,6 @@ io.on('connection', function(socket) {
 
   /* Chat */
 
-  //
-
   var numUsers = 0;
   var addedUser = false;
 
@@ -149,7 +154,7 @@ io.on('connection', function(socket) {
   socket.on('new message', function(data) {
     // log chat message
     log('[' + data.time +'] ' + socket.username + ': ' + data.message);
-    // parse string for potential command
+    // parse message for potential user command
     parseCommand(data.message);
     // we tell the client to execute 'new message'
     socket.broadcast.emit('new message', {
@@ -212,74 +217,9 @@ io.on('connection', function(socket) {
 /* Server */
 
 http.listen(port, function() {
-  console.log('listening on *:', port);
-  // process.stdout.write('ongaku> ');
+  log('listening on *:', port)
 });
 
-/* Master audio tracker */
-
-// dj.queueSong('/../audio/test.mp3');
-
-
-/* Command line interface utilities */
-
-function log(str) {
-  process.stdout.write('\r\n' + str + '\r\nongaku> ');
+function log(str, opt = '') {
+  console.log('ongaku>', str, opt);
 }
-
-function cliHelp() {
-  console.log('List of commands:');
-  console.log('| users [u]');
-  console.log('| help  [h]  quit [q]');
-}
-
-function cliUsers() {
-  if(connections.length) {
-    console.log('List of users:');
-  }
-  for(var key in connections) {
-    console.log(connections[key].id);
-  }
-  console.log('Total connected users:', connections.length);
-}
-
-function cliDj() {
-  console.log(dj.getTime());
-  dj.getSong();
-}
-
-/* Command line interface */
-
-const cmds = ['dj', 'd', 'users', 'u', 'help', 'h', 'quit', 'q'];
-
-// var stdin = process.stdin;
-// stdin.setRawMode(true);
-// stdin.resume();
-// stdin.setEncoding('utf8');
-
-// stdin.on('data', function(key) {
-//   // var chunk = process.stdin.read();
-//   process.stdout.write(key);
-//   // if (chunk !== null) {
-//   //   process.stdout.write(`data: ${chunk}`);
-//   // }
-// });
-
-cli.on('line', function(input) {
-  if(cmds.indexOf(input) >= 0) {
-    if(input[0] == 'd') {
-      cliDj();
-    }
-    if(input[0] == 'u') {
-      cliUsers();
-    }
-    if(input[0] == 'h') {
-      cliHelp();
-    }
-    if(input[0] == 'q') {
-      console.log('Good bye');
-      process.exit();
-    }
-  }
-  process.stdout.write('ongaku> ');
-});

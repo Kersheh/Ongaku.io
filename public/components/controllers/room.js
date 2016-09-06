@@ -1,5 +1,19 @@
 angular.module('ongaku.room', [])
 .controller('RoomCtrl', ['$scope', 'socket', 'timestamp', 'url', function($scope, socket, timestamp, url) {
+  var $window = $(window);
+  var $usernameInput = $('.usernameInput'); // input for username
+  var $messages = $('.messages'); // messages area
+  var $inputMessage = $('.inputMessage'); // input message input box
+
+  var $loginPage = $('.login.page'); // login page
+  var $chatPage = $('.chat.page'); // chatroom page
+
+  /* Chat commands */
+
+  // log message from server
+  socket.on('command response', function(res) {
+    log(res);
+  });
 
   /* Chat */
 
@@ -10,15 +24,6 @@ angular.module('ongaku.room', [])
     '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
     '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
   ];
-
-  // Initialize variables
-  var $window = $(window);
-  var $usernameInput = $('.usernameInput'); // Input for username
-  var $messages = $('.messages'); // Messages area
-  var $inputMessage = $('.inputMessage'); // Input message input box
-
-  var $loginPage = $('.login.page'); // The login page
-  var $chatPage = $('.chat.page'); // The chatroom page
 
   // Prompt for setting a username
   var username;

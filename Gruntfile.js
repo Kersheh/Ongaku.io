@@ -1,6 +1,18 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    concurrent: {
+      tasks: ['watch', 'run:server'],
+      options: {
+        logConcurrentOutput: true
+      }
+    },
+    run: {
+      server: {
+        cmd: 'node',
+        args: ['server.js']
+      }
+    },
     less: {
       development: {
         options: {
@@ -29,8 +41,10 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-run');
+  grunt.loadNpmTasks('grunt-concurrent');
 
-  grunt.registerTask('default', ['jshint', 'less', 'watch']);
+  grunt.registerTask('default', ['jshint', 'less', 'concurrent:tasks']);
 };
