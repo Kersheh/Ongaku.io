@@ -16,15 +16,16 @@ var dj = require('./dj.js');
 // create audio directories if not found
 function mkdirSync(path) {
   try {
-    fs.mkdirSync(path);
+    fs.mkdirSync(__dirname + path);
   } catch(err) {
     if(err.code != 'EEXIST') {
       throw err;
     }
   }
 }
-mkdirSync('./media/audio');
-mkdirSync('./media/temp');
+mkdirSync('/media');
+mkdirSync('/media/audio');
+mkdirSync('/media/temp');
 
 /* Server config */
 
