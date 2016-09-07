@@ -6,6 +6,9 @@
     "postinstall": "bower install",
     "start": "node server.js"
   },
+  "engines": {
+    "node": "6.2.1"
+  },
   "author": "Matt Breckon <mattbreckon@gmail.com>",
   "license": "MIT",
   "dependencies": {
