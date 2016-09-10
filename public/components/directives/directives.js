@@ -1,21 +1,7 @@
 angular.module('ongaku.directives', [])
 // audio player
-.directive('audioPlayer', ['$rootScope', 'socket', function($rootScope, socket) {
+.directive('audioPlayer', ['$rootScope', 'socket', 'timer', function($rootScope, socket, timer) {
   var playing = false;
-
-  // current song timer
-  var startTimer = function() {
-    setInterval(function() {
-      if(typeof $rootScope.audio_queue[0] === 'undefined' || $rootScope.audio_queue.length === 0) {
-        clearInterval(this);
-      }
-      $rootScope.audio_queue[0].time_remain = $rootScope.audio_queue[0].time_remain - 1;
-      if($rootScope.audio_queue[0].time_remain <= 0) {
-        clearInterval(this);
-        nextSong();
-      }
-    }, 1000);
-  };
 
   // play audio at top of queue
   var playSong = function() {
@@ -27,7 +13,8 @@ angular.module('ongaku.directives', [])
     // set audio remaining time
     $('audio')[0].currentTime = $rootScope.audio_queue[0].time_length - $rootScope.audio_queue[0].time_remain;
     $('audio').trigger('play');
-    startTimer();
+    // start client-side timer
+    timer.start($rootScope.audio_queue[0].time_remain, nextSong);
   };
 
   // play next song
@@ -35,6 +22,9 @@ angular.module('ongaku.directives', [])
     $rootScope.audio_queue.shift();
     if($rootScope.audio_queue.length > 0) {
       playSong();
+    }
+    else {
+      playing = false;
     }
   };
 
@@ -48,6 +38,7 @@ angular.module('ongaku.directives', [])
         // load queue from server
         socket.on('queue', function(data) {
           $rootScope.audio_queue = data;
+          console.log($rootScope.audio_queue);
           if($rootScope.audio_queue.length > 0) {
             playSong();
           }

@@ -39,34 +39,4 @@ ongaku.config(['$routeProvider', '$locationProvider', '$httpProvider', function(
   }
 
   $rootScope.audio_queue = [];
-
-  // $rootScope.audio = null;
-  // $rootScope.audio_info = {
-  //   title: '',
-  //   artist: '',
-  //   album: '',
-  //   artwork: null,
-  //   length: 0,
-  //   remain: 0
-  // };
-  // $rootScope.$watch('audio', function() {
-  //   if(init) {
-  //     $timeout(function() { init = false; });
-  //   }
-  //   else {
-  //     $('audio').attr('src', $rootScope.audio);
-  //     $('audio').trigger('load');
-  //     $('audio').oncanplay = function() {
-  //       $(this)[0].currentTime = $rootScope.audio_info.length - $rootScope.audio_info.remain;
-  //     };
-  //     $('audio').trigger('play');
-  //   }
-  // }, true);
-
-  // $('audio').bind('canplay', function() {
-  //   console.log('test');
-  //   $(this)[0].currentTime = $rootScope.audio_info.length - $rootScope.audio_info.remain;
-  // });
-
-  // audio.currentSong();
 }]);
