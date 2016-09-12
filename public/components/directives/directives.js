@@ -2,15 +2,23 @@ angular.module('ongaku.directives', [])
 // audio player
 .directive('audioPlayer', ['$rootScope', 'socket', 'timer', function($rootScope, socket, timer) {
   var playing = false;
-
   // play audio at top of queue
   var playSong = function() {
     playing = true;
+    // audio artwork data
+    if($rootScope.audio_queue[0].artwork.length) {
+      var imageBlob = new Blob([$rootScope.audio_queue[0].artwork[0].data], { type: 'image/jpeg' });
+      $('#audioArt').attr('src', URL.createObjectURL(imageBlob));
+    }
+    else {
+      $('#audioArt').attr('src', '/assets/img/record.png');
+    }
+    // audio data
     var audioBlob = new Blob([$rootScope.audio_queue[0].data], { type: 'audio/mpeg' });
     var audioURL = URL.createObjectURL(audioBlob);
     $('audio').attr('src', audioURL);
     $('audio').trigger('load');
-    // set audio remaining time
+    // set audio remaining time and play
     $('audio')[0].currentTime = $rootScope.audio_queue[0].time_length - $rootScope.audio_queue[0].time_remain;
     $('audio').trigger('play');
     // start client-side timer
@@ -25,6 +33,7 @@ angular.module('ongaku.directives', [])
     }
     else {
       playing = false;
+      $('#audioArt').attr('src', '/assets/img/record.png');
     }
   };
 
@@ -32,15 +41,16 @@ angular.module('ongaku.directives', [])
     restrict: 'A',
     templateUrl: 'components/directives/audio_player.html',
     link: function(scope, element, attrs) {
+
       // retrieve server queue on load
       if($rootScope.socket) {
         socket.emit('get queue');
         // load queue from server
         socket.on('queue', function(data) {
           $rootScope.audio_queue = data;
-          console.log($rootScope.audio_queue);
           if($rootScope.audio_queue.length > 0) {
             playSong();
+            // console.log($rootScope.audio_queue[0]);
           }
         });
         // update queue from server
@@ -95,21 +105,29 @@ angular.module('ongaku.directives', [])
 
       // update progress bar
       function updateBar(percent) {
-        // document.getElementById('progressBar').style.width = percent + '%';
         $('#percentUpload').html((Math.round(percent * 100) / 100) + '%');
-        // var progress = Math.round(((percent / 100.0) * file.size) / 1048576);
-        // document.getElementById('MB').innerHTML = progress;
       }
 
       // upload complete
       socket.on('upload complete', function() {
-        // document.getElementById('progressBar').style.width = '100%';
         $('#percentUpload').html('100%');
-        // var Content = "<img id='Thumb' src='" + Path + data['Image'] + "' alt='" + Name + "'><br>";
-        // Content += "<button  type='button' name='Upload' value='' id='Restart' class='Button'>Upload Another</button>";
-        // document.getElementById('UploadArea').innerHTML = Content;
-        // document.getElementById('Restart').addEventListener('click', Refresh);
       });
+    }
+  };
+}])
+.directive('turntable', ['$rootScope', function($rootScope) {
+  return {
+    restrict: 'A',
+    templateUrl: 'components/directives/turntable.html',
+    link: function(scope, element, attrs) {
+      $('#audioArt').attr('src', '/assets/img/record.png');
+      var angle = 0;
+      setInterval(function() {
+        angle += 1;
+        if($rootScope.audio_queue.length > 0) {
+          $("#audioArt").rotate(angle);
+        }
+      }, 10);
     }
   };
 }]);

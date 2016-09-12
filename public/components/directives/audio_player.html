@@ -1,5 +1,9 @@
-<div class="audioPlayer">
-  <div class="audioInfo">
+<div id="audioPlayer">
+  <div turntable></div>
+
+  <div id="audioUpload" upload-file></div>
+
+  <div id="audioInfo">
     <div ng-if="audio_queue[0]">{{ audio_queue[0].artist }} - {{ audio_queue[0].title }} | {{ audio_queue[0].time_length - audio_queue[0].time_remain | formatSeconds }} / {{ audio_queue[0].time_length | formatSeconds }}</div>
   </div>
 

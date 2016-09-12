@@ -233,12 +233,55 @@ a.messageLink {
 
 /* Audio Player */
 
-.audioPlayer {
+#audioPlayer {
   position: fixed;
   bottom: 0;
   left: 150px;
   width: 100%;
   background-color: #F2F2F2;
   border-top: 1px solid rgba(0, 0, 0, 0.15);
-  height: 46px;
+  height: 128px;
+}
+
+#audioTurntable {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+#audioArt {
+  position: absolute;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  border-style: solid;
+  border-color: black;
+}
+
+#audioArtCover {
+  position: absolute;
+  content: url("../img/record_cover.png");
+  width: 128px;
+  height: 128px;
+}
+
+#audioUpload {
+  position: absolute;
+  top: 0px;
+  left: 126px;
+  padding: 20px;
+}
+
+#audioUploadButton {
+  font-family: "GillSans-Light", "Gill Sans-Light", "Gill Sans Light", "Gill Sans", "Gill Sans MT", "Lato", "Futura", "Segoe UI", "Trebuchet MS", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#audioInfo {
+  position: absolute;
+  top: 0px;
+  left: 300px;
+  padding: 20px;
 }

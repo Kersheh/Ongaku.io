@@ -51,10 +51,10 @@ angular.module('ongaku.services', [])
 })
 .factory('timer', function($rootScope, $interval) {
   return {
-    // timer with callback
+    // countdown timer with callback
     start: function(remain, callback) {
       var timer = $interval(function() {
-        console.log(remain);
+        // console.log(remain);
         remain = remain - 1;
         if(remain <= 0) {
           $interval.cancel(timer);
